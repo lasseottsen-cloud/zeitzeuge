@@ -355,6 +355,214 @@
   @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
   .hidden{display:none !important}
+  /* ===== Mode toggle ===== */
+  .mode-toggle{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:700px){.mode-toggle{grid-template-columns:1fr}}
+  .mode-btn{
+    display:flex;align-items:flex-start;gap:14px;padding:18px 20px;
+    background:transparent;border:2px solid var(--line);border-radius:14px;
+    transition:all .15s;text-align:left;
+  }
+  .mode-btn:hover{border-color:var(--accent);background:rgba(255,179,71,.05)}
+  .mode-btn.active{border-color:var(--accent);background:rgba(255,179,71,.12)}
+  .mode-btn .mode-icon{font-size:28px;flex-shrink:0;line-height:1}
+  .mode-btn h3{font-size:16px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .mode-btn p{font-size:13px;color:var(--muted);line-height:1.45}
+  .badge{
+    display:inline-block;font-size:9.5px;letter-spacing:.2em;background:var(--accent);color:#0a0a0f;
+    padding:2px 7px;border-radius:99px;font-weight:800;
+  }
+
+  /* ===== Waiting Room ===== */
+  #waiting{padding:40px clamp(20px,5vw,80px);background:radial-gradient(ellipse at top,#1a1830 0%,var(--bg) 70%)}
+  .waiting-head{text-align:center;max-width:900px;margin:0 auto 28px}
+  .waiting-title{font-size:clamp(28px,4.5vw,48px);font-weight:800;letter-spacing:-.02em;margin:8px 0}
+  .waiting-title span{color:var(--accent)}
+  .waiting-sub{color:var(--muted);font-size:15px;line-height:1.5}
+  .waiting-grid{
+    max-width:1200px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start;
+  }
+  @media (max-width:900px){.waiting-grid{grid-template-columns:1fr}}
+  .qr-panel{
+    background:#fff;padding:24px;border-radius:18px;text-align:center;color:#0a0a0f;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  .qr-frame{
+    width:280px;height:280px;background:#fff;margin:0 auto 14px;display:grid;place-items:center;border-radius:8px;
+  }
+  .qr-frame svg, .qr-frame canvas, .qr-frame img{width:100%;height:100%;display:block}
+  .qr-url{
+    font-family:'SF Mono',monospace;font-size:13.5px;color:#1a1a1a;font-weight:700;
+    padding:8px 12px;background:#f0f0f0;border-radius:8px;word-break:break-all;
+  }
+  .qr-hint{font-size:12px;color:#666;margin-top:10px}
+
+  .waiting-players h2{font-size:12px;color:var(--muted);letter-spacing:.3em;text-transform:uppercase;font-weight:700;margin-bottom:14px}
+  .team-buckets{display:flex;flex-direction:column;gap:12px}
+  .team-bucket{
+    padding:16px 18px;background:var(--panel);border:1.5px solid var(--c);border-radius:14px;
+    border-left:5px solid var(--c);
+  }
+  .team-bucket .name{font-weight:700;color:var(--c);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+  .team-bucket .name .count{font-family:'SF Mono',monospace;font-size:12px;color:var(--muted);font-weight:500}
+  .team-bucket .players{display:flex;flex-wrap:wrap;gap:6px}
+  .player-chip{
+    padding:5px 11px;background:rgba(255,255,255,.05);border:1px solid var(--c);
+    border-radius:99px;font-size:13px;font-weight:600;
+    animation:chip-in .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .player-chip.dim{opacity:.4}
+  @keyframes chip-in{from{transform:scale(0) translateY(-10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+  .team-bucket .empty{font-size:13px;color:var(--muted);font-style:italic}
+
+  .waiting-foot{max-width:1200px;margin:32px auto 0;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+
+  /* ===== Mobile Client ===== */
+  body.client-mode{background:#0a0a0f}
+  #client.screen{min-height:100vh;min-height:100dvh;padding:0;display:flex;flex-direction:column}
+  #client.screen.active{display:flex}
+  .client-status{
+    padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;
+    background:var(--panel);border-bottom:1px solid var(--line);font-size:13px;
+  }
+  .client-status .me{font-weight:700;color:var(--c,#ffb347);display:flex;align-items:center;gap:8px}
+  .client-status .me::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c,#ffb347)}
+  .client-status .conn{font-size:11px;color:var(--muted);font-family:'SF Mono',monospace}
+  .client-status .conn.bad{color:var(--bad)}
+  .client-status .conn.ok{color:var(--good)}
+
+  .client-content{flex:1;display:flex;flex-direction:column;padding:18px;justify-content:flex-start}
+
+  /* Join screen */
+  .client-join{display:flex;flex-direction:column;justify-content:center;gap:16px;flex:1;max-width:420px;margin:0 auto;width:100%;text-align:center}
+  .client-join h1{font-size:32px;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
+  .client-join p{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:14px}
+  .client-join input{
+    width:100%;padding:18px 20px;background:var(--panel);border:2px solid var(--line);
+    border-radius:14px;font-size:20px;font-weight:600;color:var(--text);outline:none;
+    text-align:center;
+  }
+  .client-join input:focus{border-color:var(--accent)}
+  .client-join button{
+    width:100%;padding:18px 22px;background:var(--accent);color:#0a0a0f;
+    font-size:17px;font-weight:800;border-radius:14px;letter-spacing:.02em;
+  }
+  .client-join button:disabled{opacity:.4}
+
+  /* Assigned reveal */
+  .client-assigned{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:20px}
+  .client-assigned .label{font-size:12px;color:var(--muted);letter-spacing:.3em;text-transform:uppercase}
+  .client-assigned .team-name{
+    font-size:clamp(40px,9vw,72px);font-weight:900;letter-spacing:-.03em;line-height:1.05;color:var(--c);
+    animation:reveal-in .6s cubic-bezier(.2,.9,.3,1.2);
+  }
+  @keyframes reveal-in{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+  .client-assigned .you-are{font-size:18px;font-weight:600;color:var(--text)}
+  .client-assigned .waiting{margin-top:14px;color:var(--muted);font-size:14px;display:flex;align-items:center;gap:8px}
+  .client-assigned .waiting::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1s ease-in-out infinite}
+
+  /* Waiting between rounds */
+  .client-wait{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;padding:20px}
+  .client-wait .icon{font-size:48px}
+  .client-wait h2{font-size:24px;font-weight:800;letter-spacing:-.01em}
+  .client-wait p{color:var(--muted);font-size:14px;line-height:1.5}
+  .client-wait .mini-scoreboard{display:flex;flex-direction:column;gap:6px;width:100%;max-width:340px;margin-top:12px}
+  .mini-score-row{display:flex;justify-content:space-between;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:10px;font-size:14px}
+  .mini-score-row b{color:var(--c)}
+  .mini-score-row .pts{font-family:'SF Mono',monospace;font-weight:800}
+
+  /* Buzzer screen */
+  .client-buzzer{flex:1;display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;gap:14px;padding:14px 0}
+  .client-buzzer .q-preview{
+    padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    font-size:15px;line-height:1.4;color:#dadada;
+  }
+  .client-buzzer .q-preview .badge{background:var(--accent);margin-right:8px}
+  .client-buzzer .quote-mini{
+    background:#f5f1e8;color:#1a1a1a;padding:14px 18px;border-radius:6px;
+    font-family:Georgia,serif;font-size:15px;font-style:italic;line-height:1.4;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);transform:rotate(-.5deg);
+  }
+  .client-buzzer .quote-mini .src{font-size:11px;color:#666;font-style:normal;margin-top:6px;border-top:1px solid #ddd;padding-top:6px}
+
+  .buzzer-big{
+    flex:1;min-height:200px;padding:30px;border:0;
+    background:var(--c,#ff5c7c);color:#0a0a0f;font-size:34px;font-weight:900;letter-spacing:-.02em;
+    border-radius:24px;cursor:pointer;text-align:center;line-height:1.1;
+    box-shadow:0 14px 36px var(--c,#ff5c7c),inset 0 -8px 0 rgba(0,0,0,.18);
+    transition:transform .08s,box-shadow .08s;
+    -webkit-tap-highlight-color:transparent;user-select:none;
+  }
+  .buzzer-big:active{transform:translateY(4px);box-shadow:0 6px 18px var(--c,#ff5c7c),inset 0 -4px 0 rgba(0,0,0,.18)}
+  .buzzer-big[disabled]{opacity:.4;cursor:not-allowed;background:var(--line);color:var(--muted);box-shadow:none}
+  .buzzer-big .sub{display:block;font-size:13px;font-weight:600;opacity:.7;margin-top:6px;letter-spacing:.1em;text-transform:uppercase}
+
+  /* MC answer screen on client */
+  .client-mc{flex:1;display:flex;flex-direction:column;gap:10px;padding:6px 0}
+  .client-mc .your-turn{
+    background:rgba(255,179,71,.1);border:1.5px solid var(--accent);border-radius:12px;
+    padding:12px 16px;font-size:14px;font-weight:600;color:var(--accent);text-align:center;
+  }
+  .client-mc .mc-grid{display:grid;grid-template-columns:1fr;gap:10px;flex:1}
+  .client-mc button{
+    padding:18px 18px;border:2px solid var(--line);background:var(--panel);color:var(--text);
+    border-radius:14px;font-size:16px;font-weight:600;text-align:left;
+    display:flex;align-items:center;gap:14px;line-height:1.3;min-height:64px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .client-mc button:active{background:rgba(255,179,71,.1);border-color:var(--accent)}
+  .client-mc button .letter{
+    width:32px;height:32px;border-radius:8px;background:var(--accent);color:#0a0a0f;
+    display:grid;place-items:center;font-family:'SF Mono',monospace;font-weight:800;flex-shrink:0;
+  }
+
+  /* Year input on client */
+  .client-year{flex:1;display:flex;flex-direction:column;gap:16px;padding:20px 4px}
+  .client-year .q-text{font-size:22px;font-weight:800;line-height:1.2}
+  .client-year .ctx{font-size:14px;color:var(--muted);line-height:1.5}
+  .client-year .year-big{
+    font-size:64px;font-weight:900;letter-spacing:-.04em;text-align:center;color:var(--accent);
+    font-family:'SF Mono',monospace;font-variant-numeric:tabular-nums;
+    padding:14px;background:var(--panel);border-radius:14px;border:2px solid var(--accent);
+  }
+  .client-year input{
+    width:100%;padding:18px;background:var(--panel);border:2px solid var(--line);
+    border-radius:14px;font-size:24px;font-weight:800;color:var(--text);text-align:center;outline:none;
+    font-family:'SF Mono',monospace;
+  }
+  .client-year input:focus{border-color:var(--accent)}
+  .client-year button{
+    padding:16px;background:var(--accent);color:#0a0a0f;border-radius:14px;font-size:17px;font-weight:800;
+  }
+  .client-year button:disabled{opacity:.4}
+
+  /* Risk on client */
+  .client-risk{flex:1;display:flex;flex-direction:column;gap:14px;padding:10px 0}
+  .client-risk .hint{font-size:13.5px;color:var(--muted);line-height:1.5;text-align:center;padding:0 10px}
+  .client-risk .risk-bets{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .client-risk .risk-bets button{
+    padding:22px;font-size:22px;font-weight:800;font-family:'SF Mono',monospace;
+    background:var(--panel);border:2px solid var(--c);border-radius:14px;color:var(--c);
+  }
+  .client-risk .risk-bets button:active{background:var(--c);color:#0a0a0f}
+  .client-risk .opt-in{
+    padding:18px;background:rgba(255,179,71,.08);border:1.5px dashed var(--accent);
+    border-radius:14px;color:var(--accent);font-weight:700;text-align:center;font-size:15px;
+  }
+  .client-risk .opt-in button{
+    margin-top:10px;display:block;width:100%;padding:14px;background:var(--accent);color:#0a0a0f;
+    border-radius:12px;font-weight:800;font-size:16px;
+  }
+
+  /* Connection states */
+  .client-error{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:14px;padding:20px;
+  }
+  .client-error .icon{font-size:48px}
+  .client-error h2{font-size:22px;font-weight:800}
+  .client-error p{color:var(--muted);font-size:14px;line-height:1.5;max-width:320px}
+
   @media (max-width:700px){.options{grid-template-columns:1fr}.q-text{font-size:26px}}
 </style>
 </head>
@@ -404,6 +612,28 @@
     </div>
   </div>
 
+  <div class="lobby-grid" style="margin-top:24px;grid-template-columns:1fr">
+    <div class="panel">
+      <h2>Spielmodus</h2>
+      <div class="mode-toggle">
+        <button class="mode-btn active" data-mode="classic">
+          <div class="mode-icon">⌨️</div>
+          <div class="mode-info">
+            <h3>Klassisch</h3>
+            <p>Lehrer:in tippt 1–4 für das Team, das sich gemeldet hat. Funktioniert offline, kein WLAN nötig.</p>
+          </div>
+        </button>
+        <button class="mode-btn" data-mode="multi">
+          <div class="mode-icon">📱</div>
+          <div class="mode-info">
+            <h3>Multi-Device <span class="badge">NEU</span></h3>
+            <p>Schüler scannen QR und buzzern mit ihrem Handy. Brauchst Schul-WLAN.</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="lobby-foot">
     <p class="hint">
       <b>So funktioniert's:</b> Lehrer:in liest die Frage am Beamer vor. Wer es weiß, drückt <kbd>1</kbd>–<kbd>4</kbd>
@@ -411,6 +641,37 @@
     </p>
     <button class="start-btn" id="startBtn">▶  Show starten</button>
   </div>
+</div>
+
+<!-- ============ WAITING ROOM (Multi-Device only) ============ -->
+<div id="waiting" class="screen">
+  <div class="waiting-head">
+    <span class="tag" id="waitingTag">📱  Multi-Device · Schüler verbinden sich</span>
+    <h1 class="waiting-title">Wartet auf <span id="waitingCount">0</span> Spieler:innen</h1>
+    <p class="waiting-sub" id="waitingSub">Schüler:innen scannen den QR-Code mit ihrem Handy oder öffnen die URL.</p>
+  </div>
+  <div class="waiting-grid">
+    <div class="qr-panel">
+      <div class="qr-frame" id="qrFrame"></div>
+      <div class="qr-url" id="qrUrl">…</div>
+      <p class="qr-hint">Öffne diese URL auf dem Handy oder scanne den QR-Code.</p>
+    </div>
+    <div class="waiting-players">
+      <h2>Beigetreten · automatisch nach Team gemischt</h2>
+      <div class="team-buckets" id="teamBuckets"></div>
+    </div>
+  </div>
+  <div class="waiting-foot">
+    <button class="btn ghost" id="cancelMultiBtn">← Abbrechen</button>
+    <button class="btn ghost" id="shuffleBtn">🎲 Teams neu mischen</button>
+    <button class="start-btn" id="startMultiBtn" disabled>▶  Spiel starten</button>
+  </div>
+</div>
+
+<!-- ============ CLIENT (Mobile Schüler-UI) ============ -->
+<div id="client" class="screen client">
+  <div class="client-status" id="clientStatus"></div>
+  <div class="client-content" id="clientContent"></div>
 </div>
 
 <!-- ============ SHOW ============ -->
@@ -771,8 +1032,238 @@ let state = {
   buzzed:null, answered:[],
   timer:null, timeLeft:0,
   yearGuesses:{},
-  riskTeam:null, riskAmount:0
+  riskTeam:null, riskAmount:0,
+  // Multi-Device:
+  mode:'classic',        // 'classic' | 'multi'
+  hostId:null,           // PeerJS Host-ID
+  peer:null,             // PeerJS instance (host)
+  conns:new Map(),       // peerId → {conn, name, teamIdx, online}
+  // Client-Side:
+  isClient:false,
+  clientConn:null,
+  clientHostId:null,
+  clientName:'',
+  clientTeam:null,       // {idx, name, c}
+  clientPhase:'join',    // join | assigned | wait | buzzer | mc | year | risk-pick | risk-bet | risk-mc | reveal | error
+  clientCanAnswer:false,
+  clientQuestion:null,
+  clientScores:[],
 };
+
+/* ==========================================================================
+   NET LAYER (PeerJS)
+   ========================================================================== */
+
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    if(document.querySelector(`script[src="${src}"]`)){ resolve(); return; }
+    const s = document.createElement('script');
+    s.src = src; s.onload = resolve; s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+function genHostId(){
+  // 5-char readable id, e.g. zz-x7k3p
+  const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+  let id = 'zz-';
+  for(let i=0;i<5;i++) id += chars[Math.floor(Math.random()*chars.length)];
+  return id;
+}
+
+async function initHostNet(){
+  // Load PeerJS + qrcode libs
+  document.getElementById('startMultiBtn').disabled = true;
+  try {
+    await loadScript('https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js');
+    await loadScript('https://unpkg.com/qrcode-generator@1.4.4/qrcode.js');
+  } catch(e){
+    alert('Konnte PeerJS/QR-Lib nicht laden. Internet prüfen oder Klassik-Modus nutzen.');
+    return false;
+  }
+  state.hostId = genHostId();
+  state.peer = new Peer(state.hostId, {debug:1});
+
+  return new Promise((resolve)=>{
+    let resolved = false;
+    state.peer.on('open', id=>{
+      state.hostId = id;
+      if(!resolved){ resolved = true; resolve(true); }
+    });
+    state.peer.on('error', err=>{
+      console.warn('PeerJS error:', err);
+      if(!resolved){
+        // Try with fresh random id if ours collided
+        if(err.type === 'unavailable-id'){
+          state.hostId = genHostId();
+          state.peer = new Peer(state.hostId, {debug:1});
+          state.peer.on('open', id=>{ state.hostId = id; if(!resolved){resolved=true; resolve(true);} });
+          state.peer.on('connection', onClientConnect);
+        } else {
+          if(!resolved){ resolved = true; resolve(false); }
+        }
+      }
+    });
+    state.peer.on('connection', onClientConnect);
+    setTimeout(()=>{ if(!resolved){ resolved = true; resolve(false); } }, 8000);
+  });
+}
+
+function onClientConnect(conn){
+  conn.on('open', ()=>{
+    // Wait for hello
+    conn.on('data', data=>onClientMessage(conn, data));
+    conn.on('close', ()=>{
+      const entry = state.conns.get(conn.peer);
+      if(entry) entry.online = false;
+      renderTeamBuckets();
+    });
+  });
+}
+
+function onClientMessage(conn, msg){
+  if(!msg || !msg.t) return;
+  const entry = state.conns.get(conn.peer);
+  if(msg.t === 'hello'){
+    // New player, or reconnect with same name?
+    let name = String(msg.name||'').trim().slice(0,22) || 'Anonym';
+    // Reconnect: look for offline entry with same name
+    let reconnected = false;
+    for(const [pid, e] of state.conns){
+      if(!e.online && e.name === name && pid !== conn.peer){
+        // adopt old team
+        state.conns.delete(pid);
+        state.conns.set(conn.peer, {conn, name, teamIdx:e.teamIdx, online:true});
+        reconnected = true;
+        break;
+      }
+    }
+    if(!reconnected){
+      // De-duplicate names
+      const taken = new Set([...state.conns.values()].map(e=>e.name));
+      let baseName = name, n = 2;
+      while(taken.has(name)) name = `${baseName} (${n++})`;
+      const teamIdx = assignTeam();
+      state.conns.set(conn.peer, {conn, name, teamIdx, online:true});
+    }
+    const e = state.conns.get(conn.peer);
+    sendTo(conn, {t:'assigned', teamIdx:e.teamIdx, teamName:state.teams[e.teamIdx].name, color:state.teams[e.teamIdx].c});
+    sendTo(conn, {t:'state', phase:state.phase==='idle'?'waiting':'live'});
+    renderTeamBuckets();
+    return;
+  }
+  if(!entry) return;
+  // Game messages
+  if(msg.t === 'buzz' && state.phase === 'buzzing'){
+    doBuzz(entry.teamIdx, {byName:entry.name, byPeer:conn.peer});
+  } else if(msg.t === 'answer' && state.phase === 'answering' && state.buzzed === entry.teamIdx){
+    // Only the buzzed-team player who locked it can answer; first wins
+    if(state._answeringPeer && state._answeringPeer !== conn.peer) return;
+    state._answeringPeer = conn.peer;
+    onAnswerClick(parseInt(msg.i,10));
+  } else if(msg.t === 'guess' && state.phase === 'guessing'){
+    const y = parseInt(msg.y,10);
+    if(!isNaN(y)){
+      // Per-player guesses keyed by team; later we'll use the best (closest) per team
+      if(!state._teamGuesses) state._teamGuesses = {};
+      const tg = state._teamGuesses[entry.teamIdx] = state._teamGuesses[entry.teamIdx] || [];
+      tg.push({peer:conn.peer, name:entry.name, y});
+      // Reflect on host UI: fill the year-input visually (mark "team x sent")
+      markYearReceived(entry.teamIdx, entry.name);
+    }
+  } else if(msg.t === 'risk' && state.phase === 'risk-pick'){
+    // First-come team picks risk
+    pickRiskTeam(entry.teamIdx, {byPeer:conn.peer});
+  } else if(msg.t === 'bet' && state.phase === 'risk-bet' && entry.teamIdx === state.riskTeam){
+    setRiskAmount(parseInt(msg.n,10));
+  } else if(msg.t === 'riskAnswer' && state.phase === 'risk-answering' && entry.teamIdx === state.riskTeam){
+    onRiskAnswer(parseInt(msg.i,10));
+  }
+}
+
+function sendTo(conn, msg){
+  try { conn.send(msg); } catch(e){}
+}
+function broadcast(msg, filterFn){
+  for(const [pid, e] of state.conns){
+    if(!e.online) continue;
+    if(filterFn && !filterFn(e)) continue;
+    sendTo(e.conn, msg);
+  }
+}
+function broadcastToTeam(teamIdx, msg){
+  broadcast(msg, e=>e.teamIdx === teamIdx);
+}
+
+/* ==========================================================================
+   AUTO-BALANCE TEAM ASSIGNMENT
+   ========================================================================== */
+function assignTeam(){
+  // Count players per team (online + offline)
+  const counts = state.teams.map((_,i)=>
+    [...state.conns.values()].filter(e=>e.teamIdx===i).length
+  );
+  const min = Math.min(...counts);
+  const candidates = counts.map((c,i)=>c===min?i:-1).filter(i=>i>=0);
+  return candidates[Math.floor(Math.random()*candidates.length)];
+}
+
+function reshuffleAllTeams(){
+  // Take all players, redistribute randomly evenly
+  const players = [...state.conns.entries()].filter(([_, e])=>e.online);
+  shuffle(players);
+  const n = state.teams.length;
+  players.forEach(([pid, e], idx)=>{
+    e.teamIdx = idx % n;
+    state.conns.set(pid, e);
+    sendTo(e.conn, {t:'assigned', teamIdx:e.teamIdx, teamName:state.teams[e.teamIdx].name, color:state.teams[e.teamIdx].c});
+  });
+  renderTeamBuckets();
+}
+
+/* ==========================================================================
+   WAITING ROOM
+   ========================================================================== */
+function renderQrCode(){
+  const url = `${location.origin}${location.pathname}?join=${encodeURIComponent(state.hostId)}`;
+  const frame = document.getElementById('qrFrame');
+  document.getElementById('qrUrl').textContent = url;
+  try {
+    const qr = qrcode(0, 'M');
+    qr.addData(url);
+    qr.make();
+    // Use SVG (sharp)
+    frame.innerHTML = qr.createSvgTag({cellSize:6, margin:1, scalable:true});
+    // Make svg fill the frame
+    const svg = frame.querySelector('svg');
+    if(svg){ svg.removeAttribute('width'); svg.removeAttribute('height'); svg.setAttribute('width','100%'); svg.setAttribute('height','100%'); }
+  } catch(e){
+    frame.innerHTML = '<div style="padding:30px;color:#900;font-size:14px">QR-Generierung fehlgeschlagen — bitte URL manuell eingeben.</div>';
+  }
+}
+
+function renderTeamBuckets(){
+  const container = document.getElementById('teamBuckets');
+  if(!container) return;
+  const playersByTeam = state.teams.map((_,i)=>
+    [...state.conns.values()].filter(e=>e.teamIdx===i)
+  );
+  const total = [...state.conns.values()].filter(e=>e.online).length;
+  document.getElementById('waitingCount').textContent = total;
+  document.getElementById('startMultiBtn').disabled = total < state.teams.length; // need ≥1 per team
+
+  container.innerHTML = state.teams.map((t,i)=>{
+    const players = playersByTeam[i];
+    return `
+      <div class="team-bucket" style="--c:${t.c}">
+        <div class="name"><span>${escapeHtml(t.name)}</span><span class="count">${players.length} ${players.length===1?'Spieler':'Spieler:innen'}</span></div>
+        <div class="players">
+          ${players.length === 0 ? '<span class="empty">— noch leer —</span>' : players.map(p=>`<span class="player-chip ${p.online?'':'dim'}">${escapeHtml(p.name)}</span>`).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
 
 /* ==========================================================================
    LOBBY
@@ -792,7 +1283,62 @@ function initLobby(){
     state.teams.push({...PALETTES[state.teams.length]});
     renderTeams();
   };
-  document.getElementById('startBtn').onclick = startShow;
+  // Modus-Switch
+  document.querySelectorAll('.mode-btn').forEach(b=>{
+    b.onclick = ()=>{
+      document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      state.mode = b.dataset.mode;
+      const hint = document.querySelector('.lobby-foot .hint');
+      if(state.mode === 'multi'){
+        hint.innerHTML = '<b>Multi-Device:</b> Nach „Show starten" erscheint ein QR-Code. Schüler:innen scannen ihn → werden automatisch Teams zugewiesen. Buzzern am Handy. <kbd>Leertaste</kbd> = Weiter.';
+      } else {
+        hint.innerHTML = '<b>So funktioniert\'s:</b> Lehrer:in liest die Frage am Beamer vor. Wer es weiß, drückt <kbd>1</kbd>–<kbd>4</kbd> auf der Tastatur (oder klickt die Team-Karte) und buzzert. <kbd>Leertaste</kbd> = Weiter.';
+      }
+    };
+  });
+  document.getElementById('startBtn').onclick = onStartClick;
+  // Waiting room buttons
+  document.getElementById('cancelMultiBtn').onclick = cancelMulti;
+  document.getElementById('shuffleBtn').onclick = ()=>{
+    reshuffleAllTeams();
+  };
+  document.getElementById('startMultiBtn').onclick = ()=>{ startShow(); };
+}
+
+async function onStartClick(){
+  // ensure names not empty
+  state.teams.forEach((t,i)=>{ if(!t.name.trim()) t.name = PALETTES[i].name; });
+  if(state.mode === 'multi'){
+    // Open waiting room
+    document.getElementById('lobby').classList.remove('active');
+    document.getElementById('waiting').classList.add('active');
+    document.getElementById('waitingTag').textContent = '📱  Multi-Device · lade Server…';
+    renderTeamBuckets();
+    const ok = await initHostNet();
+    if(!ok){
+      alert('Konnte keine Verbindung zum PeerJS-Signal-Server aufbauen. Schul-WLAN prüfen oder Klassik-Modus nutzen.');
+      cancelMulti();
+      return;
+    }
+    document.getElementById('waitingTag').textContent = '📱  Multi-Device · Schüler verbinden sich';
+    renderQrCode();
+    renderTeamBuckets();
+  } else {
+    startShow();
+  }
+}
+
+function cancelMulti(){
+  // Tear down
+  if(state.peer){
+    try { state.peer.destroy(); } catch(e){}
+    state.peer = null;
+  }
+  state.conns.clear();
+  state.hostId = null;
+  document.getElementById('waiting').classList.remove('active');
+  document.getElementById('lobby').classList.add('active');
 }
 
 function renderTeams(){
@@ -835,6 +1381,7 @@ function startShow(){
   document.getElementById('roundTotal').textContent = state.questions.length;
   document.getElementById('stufeLabel').textContent = 'Stufe '+['I','II','III'][state.stufe-1];
   document.getElementById('lobby').classList.remove('active');
+  document.getElementById('waiting').classList.remove('active');
   document.getElementById('show').classList.add('active');
   renderScoreboard();
   nextRound();
@@ -895,12 +1442,60 @@ function nextRound(){
   state.yearGuesses = {};
   state.riskTeam = null;
   state.riskAmount = 0;
+  state._answeringPeer = null;
+  state._teamGuesses = {};
+  state._teamGuessReceived = {};
   state.phase = 'reading';
   document.getElementById('roundNum').textContent = state.round;
   highlightActive(-1);
   hideTimer();
   hideFootBtns();
   renderStage();
+  broadcastQuestion();
+}
+
+/* ---- Multi-device broadcast helpers ---- */
+function broadcastQuestion(){
+  if(state.mode !== 'multi') return;
+  const q = state.currentQ;
+  // For risk: renderStage broadcasts at the right phase
+  if(q.format === 'risk') return;
+  // Strip the answer index — clients see options but not which is correct
+  const payload = {
+    t:'question',
+    format: q.format,
+    q: q.q,
+    context: q.context || null,
+    when: q.when || null,
+    quote: q.quote || null,
+    opts: q.opts || null,
+    min: q.min, max: q.max,
+  };
+  broadcast(payload);
+  broadcast({t:'score', teams: state.teams.map(t=>({name:t.name, c:t.c, score:t.score}))});
+}
+function broadcastScore(){
+  if(state.mode !== 'multi') return;
+  broadcast({t:'score', teams: state.teams.map(t=>({name:t.name, c:t.c, score:t.score}))});
+}
+function broadcastWait(title, sub){
+  if(state.mode !== 'multi') return;
+  broadcast({t:'wait', title, sub, teams: state.teams.map(t=>({name:t.name, c:t.c, score:t.score}))});
+}
+function markYearReceived(teamIdx, name){
+  // Show on host UI which team has submitted
+  state._teamGuessReceived = state._teamGuessReceived || {};
+  state._teamGuessReceived[teamIdx] = (state._teamGuessReceived[teamIdx]||0) + 1;
+  const inputs = document.querySelectorAll('.year-input');
+  inputs.forEach(inp=>{
+    if(parseInt(inp.dataset.team,10) === teamIdx){
+      const count = state._teamGuessReceived[teamIdx];
+      inp.placeholder = `✓ ${count} Tipp${count===1?'':'s'}`;
+      inp.style.background = 'rgba(61,220,151,.1)';
+      inp.style.borderColor = 'var(--good)';
+      inp.disabled = true;
+    }
+  });
 }
 
 function renderStage(){
@@ -936,6 +1531,10 @@ function renderStage(){
       </div>
     `;
     stage.innerHTML = html;
+    // Multi: tell all clients this is a risk-pick question
+    if(state.mode === 'multi'){
+      broadcast({t:'question', format:'risk', q:q.q, context:q.context||null, when:q.when||null});
+    }
     return;
   }
   // Risk: phase 2 — pick bet
@@ -1029,11 +1628,12 @@ function renderStage(){
 function onTeamClick(idx){
   if(state.phase === 'buzzing') doBuzz(idx);
 }
-function doBuzz(idx){
+function doBuzz(idx, meta){
   if(state.answered.includes(idx)) return;
   state.buzzed = idx;
   state.answered.push(idx);
   state.phase = 'answering';
+  state._answeringPeer = meta && meta.byPeer || null;
   highlightActive(idx);
   document.querySelectorAll('#opts .opt').forEach(o=>{
     o.classList.remove('locked');
@@ -1044,7 +1644,23 @@ function doBuzz(idx){
   const t = state.teams[idx];
   const bp = document.getElementById('bp');
   if(bp){
-    bp.innerHTML = `Team <b style="color:${t.c};margin:0 4px">${escapeHtml(t.name)}</b> antwortet — 15 Sekunden`;
+    const byTxt = meta && meta.byName ? ` · ${escapeHtml(meta.byName)}` : '';
+    bp.innerHTML = `Team <b style="color:${t.c};margin:0 4px">${escapeHtml(t.name)}</b>${byTxt} antwortet — 15 Sekunden`;
+  }
+  // Multi-Device: tell answering peer they can answer, lock everyone else
+  if(state.mode === 'multi'){
+    broadcast({t:'locked', by:idx}, e=>e.teamIdx !== idx);
+    // Tell players in the buzzed team:
+    // - the one who buzzed first → can answer
+    // - others in same team → locked (but their team)
+    for(const [pid, e] of state.conns){
+      if(!e.online || e.teamIdx !== idx) continue;
+      if(meta && meta.byPeer && pid === meta.byPeer){
+        sendTo(e.conn, {t:'youCanAnswer'});
+      } else {
+        sendTo(e.conn, {t:'locked', by:idx});
+      }
+    }
   }
 }
 
@@ -1074,6 +1690,7 @@ function resolveAnswer(teamIdx, answerIdx, q){
     const stealableTeams = state.teams.length - state.answered.length;
     if(stealableTeams > 0){
       state.phase = 'buzzing';
+      state._answeringPeer = null;
       highlightActive(-1);
       const bp = document.getElementById('bp');
       if(bp){
@@ -1087,6 +1704,18 @@ function resolveAnswer(teamIdx, answerIdx, q){
           o.disabled = true;
         }
       });
+      // Multi-Device: tell already-answered teams they're locked out, others can buzz
+      if(state.mode === 'multi'){
+        for(const [pid, e] of state.conns){
+          if(!e.online) continue;
+          if(state.answered.includes(e.teamIdx)){
+            sendTo(e.conn, {t:'locked', by:-1});
+          } else {
+            // re-send buzzer
+            sendTo(e.conn, {t:'question', format:q.format, q:q.q, context:q.context||null, when:q.when||null, quote:q.quote||null, opts:q.opts||null});
+          }
+        }
+      }
       startTimer(15);
     } else {
       // Nobody left — reveal
@@ -1103,15 +1732,29 @@ function pointsForFormat(fmt){
 }
 
 /* ---- Risk ---- */
-function pickRiskTeam(idx){
+function pickRiskTeam(idx, meta){
+  if(state.riskTeam !== null) return; // first wins
   state.riskTeam = idx;
   state.phase = 'risk-bet';
   renderStage();
+  if(state.mode === 'multi'){
+    const team = state.teams[idx];
+    // Tell winning team: pick bet
+    broadcastToTeam(idx, {t:'riskYou'});
+    // Tell others: wait
+    broadcast({t:'riskTaken', team: team.name, color: team.c}, e=>e.teamIdx !== idx);
+  }
 }
 function setRiskAmount(v){
   state.riskAmount = v;
   state.phase = 'risk-answering';
   renderStage();
+  if(state.mode === 'multi'){
+    // Tell risking team: answer now
+    const q = state.currentQ;
+    broadcastToTeam(state.riskTeam, {t:'question', format:'risk', q:q.q, context:q.context||null, when:q.when||null, opts:q.opts});
+    broadcastToTeam(state.riskTeam, {t:'riskAnswerNow'});
+  }
 }
 function onRiskAnswer(i){
   stopTimer();
@@ -1143,6 +1786,16 @@ function revealYear(){
     if(!isNaN(v)) state.yearGuesses[inp.dataset.team] = v;
     inp.disabled = true;
   });
+  // Multi-device: collect best guess per team
+  if(state.mode === 'multi' && state._teamGuesses){
+    for(const teamIdx in state._teamGuesses){
+      const tg = state._teamGuesses[teamIdx];
+      if(!tg.length) continue;
+      // best guess = closest to target
+      tg.sort((a,b)=>Math.abs(a.y - q.target) - Math.abs(b.y - q.target));
+      state.yearGuesses[teamIdx] = tg[0].y;
+    }
+  }
   const results = state.teams.map((t,i)=>{
     const g = state.yearGuesses[i];
     if(g === undefined) return {i, g:null, diff:Infinity, pts:0, t};
@@ -1188,6 +1841,13 @@ function revealYear(){
   `;
   if(validResults.some(r=>r.diff === 0)) confetti(40);
   showFootBtns({next:true});
+  // Broadcast reveal to clients
+  if(state.mode === 'multi'){
+    const delta = {};
+    results.forEach(r=>{ delta[r.i] = r.pts; });
+    broadcast({t:'reveal', title:`Lösung: ${q.target}`, explain:q.explain, delta});
+    broadcastScore();
+  }
 }
 
 /* ---- Reveal (mc/quote/risk) ---- */
@@ -1216,6 +1876,11 @@ function showReveal(kind, q){
   `;
   stage.appendChild(reveal);
   showFootBtns({next:true});
+  // Broadcast to clients
+  if(state.mode === 'multi'){
+    broadcast({t:'reveal', correct:kind==='right', title:kind==='right'?'Richtig!':'Falsch', explain:q.explain});
+    broadcastScore();
+  }
 }
 
 /* ---- Timer ---- */
@@ -1324,6 +1989,10 @@ function endShow(){
     </div>
   `).join('');
   confetti(120);
+  // Broadcast final to clients
+  if(state.mode === 'multi'){
+    broadcast({t:'final', teams: ranked.map(t=>({name:t.name, c:t.c, score:t.score, i:t.i}))});
+  }
 }
 document.getElementById('rematchBtn').onclick = ()=>{
   state.teams.forEach(t=>t.score=0);
@@ -1355,7 +2024,448 @@ function confetti(n=30){
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function escapeAttr(s){ return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
-initLobby();
+/* ==========================================================================
+   CLIENT (Schüler-Handy)
+   ========================================================================== */
+async function initClient(){
+  renderClientStatus('verbinde…','warn');
+  renderClientJoin();
+  try {
+    await loadScript('https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js');
+  } catch(e){
+    renderClientError('Verbindung fehlgeschlagen','PeerJS konnte nicht geladen werden. Internet-Verbindung prüfen.');
+    return;
+  }
+  // Lazy: only connect after user submits name
+}
+
+function renderClientStatus(text, kind){
+  const s = document.getElementById('clientStatus');
+  const t = state.clientTeam;
+  if(t){
+    s.innerHTML = `
+      <span class="me" style="--c:${t.c}">${escapeHtml(state.clientName)} · ${escapeHtml(t.name)}</span>
+      <span class="conn ${kind||''}">${escapeHtml(text||'')}</span>
+    `;
+  } else {
+    s.innerHTML = `
+      <span class="me" style="--c:var(--muted);font-weight:600">ZEITZEUGE</span>
+      <span class="conn ${kind||''}">${escapeHtml(text||'')}</span>
+    `;
+  }
+}
+
+function renderClientJoin(){
+  state.clientPhase = 'join';
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-join">
+      <h1>Tritt dem Spiel bei</h1>
+      <p>Wie heißt du? Du wirst danach automatisch einem Team zugewiesen.</p>
+      <input type="text" id="clientNameInp" placeholder="Dein Name" maxlength="22" autocomplete="given-name"/>
+      <button id="clientJoinBtn" disabled>Beitreten</button>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px">Host: ${escapeHtml(state.clientHostId||'?')}</p>
+    </div>
+  `;
+  const inp = document.getElementById('clientNameInp');
+  const btn = document.getElementById('clientJoinBtn');
+  inp.focus();
+  inp.oninput = ()=>{ btn.disabled = inp.value.trim().length < 1; };
+  const submit = ()=>{
+    const n = inp.value.trim();
+    if(!n) return;
+    state.clientName = n;
+    clientConnect();
+  };
+  inp.onkeydown = e=>{ if(e.key==='Enter' && !btn.disabled) submit(); };
+  btn.onclick = submit;
+}
+
+function clientConnect(){
+  renderClientStatus('verbinde…','warn');
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-assigned">
+      <div class="label">Verbinde mit Spielleitung…</div>
+      <div class="waiting">Bitte warten</div>
+    </div>
+  `;
+  const peer = new Peer({debug:1});
+  peer.on('open', ()=>{
+    const conn = peer.connect(state.clientHostId, {reliable:true});
+    state.clientConn = conn;
+    conn.on('open', ()=>{
+      renderClientStatus('verbunden','ok');
+      conn.send({t:'hello', name:state.clientName});
+    });
+    conn.on('data', onClientReceive);
+    conn.on('close', ()=>{
+      renderClientStatus('getrennt','bad');
+      tryReconnect();
+    });
+    conn.on('error', err=>{
+      console.warn('Client conn error:', err);
+      renderClientStatus('Fehler','bad');
+    });
+  });
+  peer.on('error', err=>{
+    if(err.type === 'peer-unavailable'){
+      renderClientError('Spiel nicht gefunden','Die Lehrer-Show ist gerade nicht erreichbar. Bitte QR-Code erneut scannen.');
+    } else {
+      renderClientError('Verbindungsfehler', err.message || String(err));
+    }
+  });
+  state._clientPeer = peer;
+}
+
+function tryReconnect(){
+  setTimeout(()=>{
+    if(state.clientConn && state.clientConn.open) return;
+    // Reuse peer if alive, else fresh
+    if(state._clientPeer && !state._clientPeer.destroyed){
+      const conn = state._clientPeer.connect(state.clientHostId, {reliable:true});
+      state.clientConn = conn;
+      conn.on('open', ()=>{
+        renderClientStatus('verbunden','ok');
+        conn.send({t:'hello', name:state.clientName});
+      });
+      conn.on('data', onClientReceive);
+      conn.on('close', ()=>{ renderClientStatus('getrennt','bad'); tryReconnect(); });
+    } else {
+      clientConnect();
+    }
+  }, 1500);
+}
+
+function onClientReceive(msg){
+  if(!msg || !msg.t) return;
+  switch(msg.t){
+    case 'assigned': {
+      state.clientTeam = {idx:msg.teamIdx, name:msg.teamName, c:msg.color};
+      renderClientAssigned();
+      renderClientStatus('verbunden','ok');
+      break;
+    }
+    case 'state': {
+      if(msg.phase === 'waiting'){
+        // stay in assigned-waiting view
+      }
+      break;
+    }
+    case 'question': {
+      state.clientQuestion = msg;
+      state.clientCanAnswer = false;
+      if(msg.format === 'mc' || msg.format === 'quote'){
+        state.clientPhase = 'buzzer';
+        renderClientBuzzer();
+      } else if(msg.format === 'year'){
+        state.clientPhase = 'year';
+        renderClientYear();
+      } else if(msg.format === 'risk'){
+        state.clientPhase = 'risk-pick';
+        renderClientRiskPick();
+      }
+      break;
+    }
+    case 'youCanAnswer': {
+      state.clientCanAnswer = true;
+      if(state.clientQuestion && (state.clientQuestion.format === 'mc' || state.clientQuestion.format === 'quote')){
+        state.clientPhase = 'mc';
+        renderClientMC();
+      }
+      break;
+    }
+    case 'locked': {
+      state.clientCanAnswer = false;
+      renderClientLocked(msg);
+      break;
+    }
+    case 'reveal': {
+      renderClientReveal(msg);
+      break;
+    }
+    case 'riskTaken': {
+      state.clientPhase = 'risk-wait';
+      renderClientRiskWait(msg);
+      break;
+    }
+    case 'riskYou': {
+      // This client's team won the risk
+      state.clientPhase = 'risk-bet';
+      renderClientRiskBet();
+      break;
+    }
+    case 'riskAnswerNow': {
+      state.clientPhase = 'risk-mc';
+      renderClientMC(true);
+      break;
+    }
+    case 'score': {
+      state.clientScores = msg.teams || [];
+      break;
+    }
+    case 'wait': {
+      renderClientWait(msg);
+      break;
+    }
+    case 'final': {
+      renderClientFinal(msg);
+      break;
+    }
+  }
+}
+
+/* ---- Client renderers ---- */
+function renderClientAssigned(){
+  state.clientPhase = 'assigned';
+  const t = state.clientTeam;
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-assigned">
+      <div class="label">Du bist im Team</div>
+      <div class="team-name" style="--c:${t.c}">${escapeHtml(t.name)}</div>
+      <div class="you-are">${escapeHtml(state.clientName)}</div>
+      <div class="waiting">Warte auf Spielstart…</div>
+    </div>
+  `;
+}
+
+function renderClientWait(msg){
+  const scores = msg.teams || state.clientScores || [];
+  const myIdx = state.clientTeam ? state.clientTeam.idx : -1;
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-wait">
+      <div class="icon">⏳</div>
+      <h2>${escapeHtml(msg.title || 'Nächste Runde')}</h2>
+      <p>${escapeHtml(msg.sub || 'Augen auf den Beamer richten — gleich geht es weiter.')}</p>
+      ${scores.length ? `
+        <div class="mini-scoreboard">
+          ${scores.map((s,i)=>`<div class="mini-score-row" style="--c:${s.c}">
+            <span><b>${escapeHtml(s.name)}</b>${i===myIdx?' · du':''}</span>
+            <span class="pts">${s.score}</span>
+          </div>`).join('')}
+        </div>` : ''}
+    </div>
+  `;
+}
+
+function renderClientBuzzer(){
+  const q = state.clientQuestion || {};
+  const t = state.clientTeam;
+  const quoteHtml = q.quote ? `
+    <div class="quote-mini">
+      „${escapeHtml(q.quote.text)}"
+      <div class="src">— ${escapeHtml(q.quote.src)}</div>
+    </div>` : '';
+  const ctxHtml = q.context ? `
+    <div class="q-preview">
+      ${q.when ? `<span class="badge" style="background:var(--accent);color:#0a0a0f;padding:2px 8px;border-radius:99px;font-size:10px;letter-spacing:.2em">${escapeHtml(q.when)}</span> ` : ''}
+      ${escapeHtml(q.context)}
+    </div>` : (q.when ? `<div class="q-preview"><span class="badge">${escapeHtml(q.when)}</span></div>` : '');
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-buzzer">
+      ${quoteHtml}
+      ${ctxHtml}
+      <div class="q-preview" style="font-weight:700;color:var(--text);font-size:16px">${escapeHtml(q.q || '')}</div>
+      <button class="buzzer-big" style="--c:${t.c}" id="buzzBtn">
+        BUZZER
+        <span class="sub">Drücken, wenn du es weißt</span>
+      </button>
+    </div>
+  `;
+  const btn = document.getElementById('buzzBtn');
+  btn.onclick = ()=>{
+    btn.disabled = true;
+    btn.innerHTML = 'GESENDET<span class="sub">Warte auf Spielleitung…</span>';
+    sendClient({t:'buzz'});
+  };
+}
+
+function renderClientMC(forRisk=false){
+  const q = state.clientQuestion || {};
+  const opts = q.opts || [];
+  const t = state.clientTeam;
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-mc">
+      <div class="your-turn">${forRisk?'⚠ ihr riskiert — wählt eine Antwort':'⚡ Ihr habt gebuzzert — wählt!'}</div>
+      <div class="mc-grid">
+        ${opts.map((o,i)=>`
+          <button data-i="${i}">
+            <span class="letter">${'ABCD'[i]}</span>
+            <span>${escapeHtml(o)}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.client-mc button').forEach(b=>{
+    b.onclick = ()=>{
+      const i = parseInt(b.dataset.i,10);
+      document.querySelectorAll('.client-mc button').forEach(x=>x.disabled = true);
+      b.style.background = t.c;
+      b.style.color = '#0a0a0f';
+      sendClient({t: forRisk ? 'riskAnswer' : 'answer', i});
+    };
+  });
+}
+
+function renderClientLocked(msg){
+  // Show "another team is answering"
+  const lockedByTeam = msg.by !== undefined ? state.clientScores[msg.by] : null;
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-wait">
+      <div class="icon">🔒</div>
+      <h2>Anderes Team antwortet</h2>
+      <p>${lockedByTeam ? `<b style="color:${lockedByTeam.c}">${escapeHtml(lockedByTeam.name)}</b> war zuerst.` : 'Bitte warten.'}</p>
+    </div>
+  `;
+}
+
+function renderClientYear(){
+  const q = state.clientQuestion || {};
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-year">
+      <div class="q-text">${escapeHtml(q.q || '')}</div>
+      ${q.context ? `<div class="ctx">${escapeHtml(q.context)}</div>` : ''}
+      ${q.when ? `<div class="ctx" style="font-family:'SF Mono',monospace;color:var(--accent);font-size:12px;letter-spacing:.2em;text-transform:uppercase">${escapeHtml(q.when)}</div>` : ''}
+      <input type="number" id="yearInp" placeholder="????" min="${q.min}" max="${q.max}"/>
+      <p style="text-align:center;color:var(--muted);font-size:13px">Zeitraum: ${q.min}–${q.max}</p>
+      <button id="yearSubmit" disabled>Schätzung abgeben</button>
+    </div>
+  `;
+  const inp = document.getElementById('yearInp');
+  const btn = document.getElementById('yearSubmit');
+  inp.focus();
+  inp.oninput = ()=>{ btn.disabled = !inp.value.trim(); };
+  btn.onclick = ()=>{
+    const y = parseInt(inp.value,10);
+    if(isNaN(y)) return;
+    btn.disabled = true; inp.disabled = true;
+    btn.textContent = '✓ abgegeben';
+    sendClient({t:'guess', y});
+    renderClientStatus('Schätzung gesendet','ok');
+  };
+}
+
+function renderClientRiskPick(){
+  const q = state.clientQuestion || {};
+  const t = state.clientTeam;
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-risk">
+      <div class="opt-in">
+        ⚠ Wagnis-Runde<br/>
+        <span style="color:var(--text);font-weight:600;display:block;margin-top:8px;font-size:14px">Wenn ihr euch traut: einen Einsatz wagen, Frage allein beantworten.</span>
+        <button id="riskTakeBtn">Wir wagen es!</button>
+      </div>
+      <div class="hint">Schneller als die anderen Teams sein — wer zuerst klickt, bekommt die Frage.</div>
+    </div>
+  `;
+  document.getElementById('riskTakeBtn').onclick = ()=>{
+    document.getElementById('riskTakeBtn').disabled = true;
+    document.getElementById('riskTakeBtn').textContent = 'Gesendet…';
+    sendClient({t:'risk'});
+  };
+}
+
+function renderClientRiskBet(){
+  const t = state.clientTeam;
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-risk">
+      <div class="opt-in" style="border-color:${t.c};color:${t.c}">
+        🎯 Ihr wagt es! Wählt euren Einsatz:
+      </div>
+      <div class="risk-bets">
+        ${[100,250,500,1000].map(v=>`<button style="--c:${t.c};color:${t.c};border-color:${t.c}" data-v="${v}">${v}</button>`).join('')}
+      </div>
+      <div class="hint">Bei richtig: +(2× Einsatz). Bei falsch: −Einsatz.</div>
+    </div>
+  `;
+  document.querySelectorAll('.client-risk .risk-bets button').forEach(b=>{
+    b.onclick = ()=>{
+      const v = parseInt(b.dataset.v,10);
+      document.querySelectorAll('.client-risk .risk-bets button').forEach(x=>x.disabled=true);
+      b.style.background = t.c; b.style.color = '#0a0a0f';
+      sendClient({t:'bet', n:v});
+    };
+  });
+}
+
+function renderClientRiskWait(msg){
+  const otherTeam = msg.team || null;
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-wait">
+      <div class="icon">⚠️</div>
+      <h2>${otherTeam ? escapeHtml(otherTeam) : 'Anderes Team'} wagt es</h2>
+      <p>Ihr seid jetzt Zuschauer:innen. Daumendrücken (oder nicht).</p>
+    </div>
+  `;
+}
+
+function renderClientReveal(msg){
+  const t = state.clientTeam;
+  const delta = msg.delta && msg.delta[t.idx];
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-wait">
+      <div class="icon">${msg.correct === true ? '✓' : (msg.correct === 'team' ? '🎉' : (msg.correct === false ? '✗' : '⏱'))}</div>
+      <h2>${msg.title || (msg.correct ? 'Richtig!' : 'Auflösung')}</h2>
+      ${delta !== undefined ? `<p style="color:${delta>0?'var(--good)':delta<0?'var(--bad)':'var(--muted)'};font-family:'SF Mono',monospace;font-size:24px;font-weight:800">${delta>0?'+':''}${delta} Punkte</p>` : ''}
+      <p>${escapeHtml(msg.explain || '')}</p>
+    </div>
+  `;
+}
+
+function renderClientFinal(msg){
+  const ranked = msg.teams || [];
+  const myIdx = state.clientTeam ? state.clientTeam.idx : -1;
+  const winnerIdx = ranked[0] ? ranked[0].i : -1;
+  const won = myIdx === winnerIdx;
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-wait">
+      <div class="icon">${won ? '🏆' : '🎬'}</div>
+      <h2>${won ? 'Ihr habt gewonnen!' : 'Show beendet'}</h2>
+      <p>${won ? 'Glückwunsch — Schul-Geschichts-Champions des Tages.' : 'Danke fürs Mitspielen!'}</p>
+      <div class="mini-scoreboard">
+        ${ranked.map((s,i)=>`<div class="mini-score-row" style="--c:${s.c}">
+          <span><b>${i+1}. ${escapeHtml(s.name)}</b>${s.i===myIdx?' · ihr':''}</span>
+          <span class="pts">${s.score}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderClientError(title, sub){
+  document.getElementById('clientContent').innerHTML = `
+    <div class="client-error">
+      <div class="icon">⚠️</div>
+      <h2>${escapeHtml(title)}</h2>
+      <p>${escapeHtml(sub)}</p>
+      <button class="btn" onclick="location.reload()" style="margin-top:18px">Neu versuchen</button>
+    </div>
+  `;
+  renderClientStatus('Fehler','bad');
+}
+
+function sendClient(msg){
+  if(state.clientConn && state.clientConn.open){
+    try { state.clientConn.send(msg); } catch(e){ console.warn(e); }
+  }
+}
+
+/* ==========================================================================
+   BOOT: Mode detection
+   ========================================================================== */
+(function boot(){
+  const join = new URLSearchParams(location.search).get('join');
+  if(join){
+    state.isClient = true;
+    state.clientHostId = join;
+    document.body.classList.add('client-mode');
+    // Hide host screens
+    document.getElementById('lobby').classList.remove('active');
+    document.getElementById('client').classList.add('active');
+    initClient();
+  } else {
+    initLobby();
+  }
+})();
 </script>
 </body>
 </html>
