@@ -729,109 +729,147 @@ const PALETTES = [
    ========================================================================== */
 const Q = {
 
-  /* === STUFE 1 — Klasse 5–7 === */
+  /* === STUFE 1 — Klasse 5–7 (Lehrplan SH: Antike, Mittelalter, Frühe Neuzeit, Lebenswelten) === */
   1:[
+    {format:'risk',
+      q:"Welches Bauwerk in Ägypten ist über 4500 Jahre alt und steht heute fast komplett erhalten in der Wüste?",
+      context:"Die Pharaonen ließen riesige Grabmäler errichten — als Wohnung fürs Jenseits.",
+      opts:["Tempel von Karnak","Pyramide von Gizeh (Cheops)","Sphinx","Tempel von Luxor"], correct:1,
+      explain:"Die Cheops-Pyramide. Sie war 3800 Jahre lang das höchste Bauwerk der Welt!",
+      fact:"Rund 2,3 Millionen Steinblöcke, jeder 2–50 Tonnen schwer. Wie die alten Ägypter das ohne Kran gebaut haben, wird bis heute erforscht."},
+
+    {format:'mc',
+      q:"Wo fanden im antiken Griechenland alle 4 Jahre die berühmten Spiele statt, die heute wieder ausgetragen werden?",
+      context:"Zu Ehren der Götter — auch Krieg wurde dafür unterbrochen.",
+      opts:["Athen","Olympia","Sparta","Theben"], correct:1,
+      explain:"Olympia, auf der Halbinsel Peloponnes. Erste belegte Spiele 776 v. Chr.",
+      fact:"Bei den antiken Spielen kämpften die Athleten nackt. Frauen durften nicht zuschauen — bei Todesstrafe!"},
+
     {format:'quote',
-      quote:{text:"Ich kam, ich sah, ich siegte.", src:"Brief nach der Schlacht von Zela · 47 v. Chr."},
-      q:"Wer schrieb das?",
-      opts:["Alexander der Große","Julius Cäsar","Napoleon Bonaparte","Karl der Große"], correct:1,
-      explain:"Julius Cäsar — auf Latein „Veni, vidi, vici“. Eine Sieges-Meldung an den römischen Senat.",
-      fact:"Cäsar wurde drei Jahre später, am 15. März 44 v. Chr., im Senat von 23 Dolchstichen ermordet. Sein berühmtes letztes Wort: „Auch du, mein Sohn Brutus?“"},
+      quote:{text:"Ich kam, ich sah, ich siegte.", src:"Brief an den römischen Senat nach der Schlacht von Zela · 47 v. Chr."},
+      q:"Welcher römische Feldherr schrieb das?",
+      opts:["Augustus","Julius Cäsar","Hannibal","Mark Aurel"], correct:1,
+      explain:"Julius Cäsar — auf Latein „Veni, vidi, vici“. Eine Sieges-Meldung in nur drei Worten.",
+      fact:"Cäsar wurde drei Jahre später, am 15. März 44 v. Chr., im römischen Senat von 23 Dolchstichen ermordet. Sein berühmtes letztes Wort soll gewesen sein: „Auch du, mein Sohn Brutus?“"},
+
+    {format:'mc',
+      q:"Welches Tier nahm Hannibal aus Karthago mit über die Alpen, um Rom anzugreifen?",
+      context:"218 v. Chr. überquerte er mit seinem Heer im Winter die Berge — eine militärische Sensation.",
+      opts:["Pferde","Elefanten","Kamele","Stiere"], correct:1,
+      explain:"37 Kriegselefanten. Die meisten überlebten die Eiseskälte nicht.",
+      fact:"Hannibal hielt Rom 17 Jahre lang in Atem. Erst dann konnten die Römer ihn endgültig besiegen."},
+
+    {format:'year', min:700, max:900, target:800,
+      q:"In welchem Jahr wurde Karl der Große in Rom zum Kaiser gekrönt?",
+      context:"Er beherrschte ein riesiges Reich — Frankreich, Deutschland, Norditalien.",
+      when:"Weihnachtstag · Petersdom · Rom",
+      explain:"800 — am 25. Dezember durch Papst Leo III. „Karolus Imperator Augustus“.",
+      fact:"Karl konnte selbst kaum lesen und schreiben — aber er förderte Bildung wie kein Herrscher vor ihm. Latein wurde zur Sprache der Wissenschaft."},
+
+    {format:'risk',
+      q:"In welchem Ort in Schleswig-Holstein stand vor 1000 Jahren die größte Wikinger-Handelsstadt Nordeuropas?",
+      context:"Heute UNESCO-Welterbe — von dort fuhren Wikinger-Schiffe in alle Himmelsrichtungen.",
+      opts:["Lübeck","Haithabu (bei Schleswig)","Kiel","Flensburg"], correct:1,
+      explain:"Haithabu — heute am Haddebyer Noor. Mit bis zu 1.500 Einwohnern war es eine Großstadt der Wikingerzeit.",
+      fact:"Im Jahr 1066 wurde Haithabu zerstört und nie wieder aufgebaut. Lübeck übernahm die Rolle als Handels-Hauptstadt des Nordens."},
+
+    {format:'mc',
+      q:"Welcher mächtige Bund von Hansestädten beherrschte ab dem 13. Jahrhundert den Ostsee-Handel?",
+      context:"Lübeck war ihre „Königin“. Auch Hamburg, Bremen, Rostock gehörten dazu.",
+      opts:["Die Liga","Die Hanse","Die Bruderschaft","Der Schwabenbund"], correct:1,
+      explain:"Die Hanse — ein Bund von bis zu 200 Städten. Sie schützten Handelsschiffe gemeinsam und hatten eine eigene Außenpolitik.",
+      fact:"Die Bezeichnung „Hansestadt“ tragen Lübeck, Hamburg, Bremen, Rostock, Wismar, Greifswald, Stralsund, Stade und Anklam bis heute — auf ihrem Autokennzeichen steht ein „H“."},
+
+    {format:'quote',
+      quote:{text:"Hier stehe ich, ich kann nicht anders. Gott helfe mir. Amen.", src:"Reichstag zu Worms · 18. April 1521 (vermutlich später so überliefert)"},
+      q:"Welcher Mönch sagte das vor Kaiser Karl V. — und löste damit die Reformation aus?",
+      opts:["Thomas Müntzer","Martin Luther","Johannes Calvin","Erasmus von Rotterdam"], correct:1,
+      explain:"Martin Luther — er hatte 1517 die 95 Thesen angeschlagen und sollte sie in Worms widerrufen. Er weigerte sich.",
+      fact:"Ohne den frisch erfundenen Buchdruck (Gutenberg, um 1450) wäre die Reformation nie so schnell durch Europa gefegt. Luther war einer der ersten „viralen Autoren“ der Geschichte."},
 
     {format:'year', min:1450, max:1550, target:1492,
-      q:"Wann erreichte Kolumbus zum ersten Mal eine Karibikinsel?",
-      context:"Drei Schiffe — Niña, Pinta, Santa María. Die spanische Krone zahlt, weil man eine schnelle Westroute nach Indien sucht.",
-      when:"Abfahrt: 3. August · Palos de la Frontera",
-      explain:"12. Oktober 1492 — die Insel hieß bei den Einheimischen Guanahani, Kolumbus taufte sie „San Salvador“.",
+      q:"In welchem Jahr erreichte Kolumbus zum ersten Mal eine Karibikinsel?",
+      context:"Drei Schiffe — Niña, Pinta, Santa María. Die spanische Krone zahlt, weil er eine Westroute nach Indien sucht.",
+      when:"12. Oktober · San Salvador / Guanahani",
+      explain:"1492 — die Insel hieß bei den Einheimischen Guanahani, Kolumbus taufte sie „San Salvador“.",
       fact:"Kolumbus glaubte bis zu seinem Tod, in Indien gelandet zu sein. Deshalb der Begriff „Indianer“ — bis heute umstritten."},
 
     {format:'mc',
-      q:"Welches Tier nahm Hannibal mit über die Alpen, um Rom anzugreifen?",
-      context:"218 v. Chr. — Hannibal aus Karthago will Rom überraschen und überquert die verschneiten Alpen.",
-      opts:["Pferde","Elefanten","Kamele","Stiere"], correct:1,
-      explain:"Kriegselefanten — 37 sollen es gewesen sein. Die meisten überlebten die Kälte nicht.",
-      fact:"Hannibal hielt Rom 17 Jahre lang in Atem. Erst dann konnten die Römer ihn endgültig besiegen."},
+      q:"Wer war im Mittelalter typischerweise NICHT Teil der „Drei Stände“?",
+      context:"„Die einen beten, die anderen kämpfen, die anderen arbeiten“ — so dachten die Menschen damals.",
+      opts:["Geistlicher (Klerus)","Ritter (Adel)","Bauer","Programmierer"], correct:3,
+      explain:"Klerus, Adel, Bauern — das waren die drei Stände. Ein Programmierer hätte den Mittelalter-Menschen nicht erklären können, was er macht.",
+      fact:"Bauern und Mägde machten über 90% der Bevölkerung aus — aber sie schrieben keine Bücher. Deshalb wissen wir über sie viel weniger als über Adel und Kirche."},
 
-    {format:'risk',
-      q:"Welcher Mönch schlug 1517 seine 95 Thesen an die Schlosskirche in Wittenberg — und löste damit die Reformation aus?",
-      opts:["Thomas Müntzer","Martin Luther","Johannes Calvin","Erasmus von Rotterdam"], correct:1,
-      explain:"Martin Luther — er kritisierte den Ablasshandel der Kirche. Europa spaltete sich in protestantisch und katholisch.",
-      fact:"Ohne den frisch erfundenen Buchdruck wäre das nie passiert. Luther war einer der ersten „viralen Autoren“ der Geschichte."},
-
-    {format:'year', min:1900, max:2000, target:1969,
-      q:"In welchem Jahr betrat ein Mensch zum ersten Mal den Mond?",
-      when:"20. Juli · 20:17 UTC",
-      explain:"1969 — Apollo 11. Neil Armstrong und Buzz Aldrin landeten, Michael Collins blieb im Orbit.",
-      fact:"NASA-Mission „Artemis“ plant für 2026/27 die Rückkehr — diesmal mit der ersten Frau auf dem Mond. Über 50 Jahre Pause."},
-
-    {format:'quote',
-      quote:{text:"Ich bin ein Berliner.", src:"Rede vor dem Schöneberger Rathaus · 26. Juni 1963"},
-      q:"Welcher US-Präsident sagte das in West-Berlin?",
-      opts:["John F. Kennedy","Ronald Reagan","Richard Nixon","Lyndon B. Johnson"], correct:0,
-      explain:"John F. Kennedy. Knapp zwei Jahre nach dem Mauerbau — als Solidaritäts-Botschaft.",
-      fact:"Hartnäckiger Mythos: Kennedy habe sich „Berliner“ = Pfannkuchen genannt. Falsch — der Satz ist grammatisch korrekt."},
+    {format:'year', min:1700, max:1900, target:1789,
+      q:"Wann begann mit dem Sturm auf die Bastille die Französische Revolution?",
+      context:"„Liberté, Égalité, Fraternité“ — Freiheit, Gleichheit, Brüderlichkeit. Die wütende Pariser Bevölkerung stürmt das verhasste Gefängnis.",
+      when:"14. Juli · Paris",
+      explain:"1789 — die Französische Revolution stürzte König Ludwig XVI., schuf die Menschenrechte und prägte ganz Europa.",
+      fact:"Der 14. Juli ist bis heute französischer Nationalfeiertag. In der Bastille saßen am Tag des Sturms übrigens nur 7 Gefangene — der Symbolwert war wichtiger."},
 
     {format:'mc',
-      q:"Was war die „Berliner Mauer“?",
-      context:"28 Jahre lang trennte sie eine Stadt und teilte Familien.",
-      opts:["Alte Stadtmauer aus dem Mittelalter","Grenzanlage zwischen Ost- und West-Berlin","Hochhaus-Siedlung","Schutzwall gegen Hochwasser"], correct:1,
-      explain:"Errichtet von der DDR ab dem 13.8.1961, gefallen am 9.11.1989.",
-      fact:"2024 wurde der 35. Jahrestag des Mauerfalls gefeiert. Eure Eltern haben das vermutlich live erlebt — fragt sie mal!"},
-
-    {format:'year', min:1400, max:1700, target:1517,
-      q:"Wann begann mit Luthers 95 Thesen die Reformation?",
-      when:"31. Oktober · Wittenberg",
-      explain:"1517 — der „Thesenanschlag“ am Reformationstag.",
-      fact:"In einigen Bundesländern ist der 31. Oktober gesetzlicher Feiertag — als Reformationstag."},
-
-    {format:'mc',
-      q:"Welches Wahrzeichen Berlins stand direkt an der Mauer — heute Symbol der Wiedervereinigung?",
+      q:"Welches Wahrzeichen Berlins stand direkt an der Mauer — heute Symbol der deutschen Wiedervereinigung?",
+      context:"Fast 30 Jahre lang war es eingemauert und nicht passierbar.",
       opts:["Fernsehturm","Brandenburger Tor","Reichstag","Berliner Schloss"], correct:1,
-      explain:"Das Brandenburger Tor — am 22.12.1989 für den Verkehr wieder geöffnet. Fast 30 Jahre war es eingemauert.",
-      fact:"Oben auf dem Tor steht die „Quadriga“ — vier Pferde, die die Friedensgöttin ziehen. Napoleon klaute sie 1806, Preußen holte sie 1814 zurück."},
-
-    {format:'quote',
-      quote:{text:"Wir schaffen das.", src:"Sommer 2015 — über eine Million Geflüchtete kommen nach Deutschland"},
-      q:"Wer sagte diesen berühmten Satz?",
-      opts:["Helmut Kohl","Joachim Gauck","Angela Merkel","Frank-Walter Steinmeier"], correct:2,
-      explain:"Angela Merkel — Bundeskanzlerin 2005 bis 2021. Der Satz prägte ihre Flüchtlingspolitik.",
-      fact:"Bis heute politisch umstritten — von den einen gelobt, von den anderen kritisiert. Ein Satz, der eine Epoche prägte."},
-
-    {format:'risk',
-      q:"Welches Bauwerk in Ägypten ist über 4500 Jahre alt und immer noch fast komplett erhalten?",
-      opts:["Tempel von Karnak","Pyramide von Gizeh","Sphinx","Tempel von Luxor"], correct:1,
-      explain:"Die Cheops-Pyramide. Sie war 3800 Jahre lang das höchste Bauwerk der Welt!",
-      fact:"Rund 2,3 Millionen Steinblöcke, jeder zwischen 2 und 50 Tonnen schwer. Wie die alten Ägypter das gebaut haben, wird bis heute erforscht."},
-
-    {format:'year', min:1800, max:1900, target:1871,
-      q:"Wann wurde das Deutsche Reich gegründet (Reichsgründung)?",
-      when:"18. Januar · Spiegelsaal von Versailles",
-      explain:"1871 — nach dem Sieg im Deutsch-Französischen Krieg. Wilhelm I. wurde zum Kaiser ausgerufen.",
-      fact:"Vorher gab es kein „Deutschland“ als Staat, sondern Dutzende Königreiche und Herzogtümer. Bayern, Preußen — wie heute Belgien oder Niederlande."},
+      explain:"Das Brandenburger Tor — am 22. Dezember 1989 für den Verkehr wieder geöffnet.",
+      fact:"Oben thront die „Quadriga“ — vier Pferde, die die Friedensgöttin Eirene ziehen. Napoleon klaute sie 1806 nach Paris, Preußen holte sie 1814 zurück."},
   ],
 
-  /* === STUFE 2 — Klasse 8–10 === */
+  /* === STUFE 2 — Klasse 8–10 (Lehrplan SH: 18.-20. Jh., SH-Regional 1848/64, Vertriebene) === */
   2:[
+    {format:'year', min:1700, max:1900, target:1789,
+      q:"Wann begann die Französische Revolution mit dem Sturm auf die Bastille?",
+      context:"„Liberté, Égalité, Fraternité“ — Bürger erkämpfen erste moderne Verfassung Europas und stürzen den absolutistischen König.",
+      when:"14. Juli · Paris",
+      explain:"1789. Die Erklärung der Menschen- und Bürgerrechte (26.8.1789) ist Vorbild aller modernen Grundrechte — bis hin zum deutschen Grundgesetz.",
+      fact:"Die Revolution endete blutig: Der König und seine Frau Marie-Antoinette wurden 1793 unter der Guillotine hingerichtet. Wenig später folgte Napoleons Kaiserreich."},
+
+    {format:'mc',
+      q:"Welche Erfindung James Watts ab 1769 markiert den Beginn der Industriellen Revolution?",
+      context:"Aus Handarbeit wurde Maschinenarbeit. Dörfer wurden zu Fabrikstädten.",
+      opts:["Die Glühbirne","Die verbesserte Dampfmaschine","Die Eisenbahn","Das Auto"], correct:1,
+      explain:"Die Dampfmaschine — bestehende Konstruktionen verbesserte Watt so stark, dass sie wirtschaftlich nutzbar wurde. Damit begann ein globaler Umbruch.",
+      fact:"Mit der Industriellen Revolution begann auch der massive CO₂-Ausstoß. Klimaforscher datieren den Beginn der menschengemachten Klimakrise auf eben diese Zeit."},
+
     {format:'quote',
-      quote:{text:"Das tritt nach meiner Kenntnis … ist das sofort, unverzüglich.", src:"Pressekonferenz · 9. November 1989 · 18:53 Uhr"},
-      q:"Wer löste mit diesem stotternden Satz versehentlich den Mauerfall aus?",
-      opts:["Erich Honecker","Günter Schabowski","Egon Krenz","Helmut Kohl"], correct:1,
-      explain:"Günter Schabowski — SED-Politbüro-Mitglied. Er hatte den Zettel kurz vorher in die Hand gedrückt bekommen und las falsch ab.",
-      fact:"Eigentlich sollte die Regelung erst am nächsten Tag in Kraft treten. Sein „sofort, unverzüglich“ sandte Tausende Ost-Berliner zur Mauer. Die Grenzer ließen sie durch — ohne Befehl."},
+      quote:{text:"Up ewig ungedeelt!", src:"Schlachtruf der schleswig-holsteinischen Bewegung · ab 1844 (plattdeutsch)"},
+      q:"Was forderten die Schleswig-Holsteiner damit gegenüber dem dänischen Königreich?",
+      context:"Schleswig und Holstein waren in Personalunion mit dem dänischen König verbunden — viele Bürger wollten unabhängig sein.",
+      opts:[
+        "Die ewige Trennung von Dänemark",
+        "Schleswig und Holstein „auf ewig ungeteilt“ — gemeinsam und vom dänischen Reich gelöst",
+        "Ewige Treue zum dänischen König",
+        "Ewige Hansestadt-Rechte für Lübeck"
+      ], correct:1,
+      explain:"Plattdeutsch: „auf ewig ungeteilt“. Die beiden Herzogtümer sollten zusammenbleiben — und sich vom dänischen Reich lösen.",
+      fact:"Diese Forderung führte zu den Schleswig-Holsteinischen Kriegen 1848–1851 und 1864. Erst nach dem Krieg 1864 wurden beide Herzogtümer endgültig von Dänemark abgetrennt — und später preußisch. Bis heute SH-Identität."},
+
+    {format:'year', min:1800, max:1900, target:1871,
+      q:"Wann wurde im Spiegelsaal von Versailles das Deutsche Kaiserreich ausgerufen?",
+      context:"Bismarck einte die deutschen Staaten — nach drei Kriegen (1864 gegen Dänemark, 1866 gegen Österreich, 1870/71 gegen Frankreich).",
+      when:"18. Januar · Spiegelsaal von Versailles",
+      explain:"1871. Wilhelm I. wurde zum Deutschen Kaiser ausgerufen — eine Demütigung Frankreichs, die bis zum Ersten Weltkrieg nachhallte.",
+      fact:"Vorher war „Deutschland“ kein Staat, sondern ein Flickenteppich aus Königreichen, Herzogtümern und freien Städten. Schleswig-Holstein wurde 1867 preußische Provinz."},
+
+    {format:'mc',
+      q:"Was war zentrale Forderung der „1848er-Revolution“ in den deutschen Staaten?",
+      context:"Im März 1848 demonstrieren Bürger:innen in Berlin, Wien und vielen Hauptstädten — auch in Kiel und Rendsburg.",
+      opts:[
+        "Eine Diktatur",
+        "Nationaleinheit, Verfassung, Pressefreiheit, Grundrechte",
+        "Rückkehr ins Mittelalter",
+        "Trennung von Bayern"
+      ], correct:1,
+      explain:"Liberale und demokratische Forderungen — eine Verfassung für ganz Deutschland, Grundrechte, Pressefreiheit. Die Paulskirchen-Versammlung in Frankfurt arbeitete daran.",
+      fact:"Die Revolution scheiterte 1849 am Widerstand der Fürsten. Aber ihre Forderungen — Grundrechte, Nationalstaat — wurden später Realität. Schleswig-Holstein war Brennpunkt: dort tobte parallel der Krieg gegen Dänemark."},
 
     {format:'year', min:1900, max:1950, target:1914,
       q:"Wann begann der Erste Weltkrieg?",
       context:"Ein Attentat in Sarajevo löst eine Kettenreaktion aus. Bündnisverpflichtungen zwingen halb Europa in den Krieg.",
       when:"28. Juni · Attentat von Sarajevo",
-      explain:"1914 — am 28. Juli erklärte Österreich-Ungarn Serbien den Krieg. In einer Woche waren Russland, Deutschland, Frankreich, Großbritannien beteiligt.",
-      fact:"17 Mio. Tote, 20 Mio. Verwundete. 2024 wurde der 110. Jahrestag des Kriegsbeginns begangen — kein Zeitzeuge lebt mehr."},
-
-    {format:'mc',
-      q:"Welche Großmacht startete am 24. Februar 2022 eine Invasion ihres Nachbarlandes — und prägt seither die europäische Politik?",
-      context:"Größter Krieg in Europa seit 1945. Folge: NATO-Erweiterung, dt. „Zeitenwende“, Energiekrise.",
-      opts:["China gegen Taiwan","Russland gegen die Ukraine","Türkei gegen Syrien","Iran gegen Israel"], correct:1,
-      explain:"Russland gegen die Ukraine. Wladimir Putin nannte es zynisch „militärische Spezialoperation“.",
-      fact:"Deutschland beschloss 2022 ein 100-Mrd.-Sondervermögen für die Bundeswehr. Eine Summe, die 2021 noch undenkbar war."},
+      explain:"1914 — am 28. Juli erklärte Österreich-Ungarn Serbien den Krieg. In einer Woche kämpften Russland, Deutschland, Frankreich, Großbritannien.",
+      fact:"17 Mio. Tote, 20 Mio. Verwundete. 2024 wurde der 110. Jahrestag begangen — kein Zeitzeuge lebt mehr. Der Krieg endete mit dem Vertrag von Versailles, der zur Wurzel des Zweiten Weltkriegs wurde."},
 
     {format:'quote',
       quote:{text:"Freiheit und Leben kann man uns nehmen, die Ehre nicht.", src:"Reichstagsrede gegen das Ermächtigungsgesetz · 23. März 1933"},
@@ -840,89 +878,152 @@ const Q = {
       explain:"Otto Wels — SPD-Vorsitzender. 94 SPD-Abgeordnete stimmten gegen das Gesetz. Alle anderen Parteien stimmten ZU.",
       fact:"Wels musste ins Exil fliehen, starb 1939 in Paris. Seine Rede gilt heute als eine der mutigsten der deutschen Geschichte."},
 
-    {format:'year', min:1980, max:2000, target:1989,
-      q:"In welchem Jahr fiel die Berliner Mauer?",
-      when:"9. November · Berlin",
-      explain:"1989 — am 9. November. Ein „Schicksalstag der Deutschen“: auch Hitler-Putsch 1923, Pogromnacht 1938. Deshalb ist Nationalfeiertag der 3. Oktober (Wiedervereinigung 1990).",
-      fact:"Es war ein Kommunikationsfehler: Schabowski las eine Notiz falsch ab. Geschichte durch Stottern."},
-
-    {format:'risk',
-      q:"Welche Atom-Katastrophe traf 1986 die Sowjetunion und kontaminierte halb Europa?",
-      context:"Reaktor-4 explodiert bei einem Test. Sowjetregierung verheimlicht — Schweden misst Radioaktivität als erstes.",
-      opts:["Fukushima","Tschernobyl","Three Mile Island","Mayak"], correct:1,
-      explain:"Tschernobyl, heute Ukraine. 31 Tote sofort, geschätzt 4.000–60.000 langfristige Krebs-Tote.",
-      fact:"Seit 2022 wieder in den Schlagzeilen: Russische Truppen besetzten das stillgelegte AKW während der Invasion. Eine zweite Katastrophe wurde knapp verhindert."},
-
-    {format:'quote',
-      quote:{text:"How dare you. You have stolen my dreams and my childhood with your empty words.", src:"UN-Klimagipfel New York · 23. September 2019"},
-      q:"Welche Person richtete diese Worte an die UN-Vollversammlung?",
-      opts:["Malala Yousafzai","Greta Thunberg","Emma González","Luisa Neubauer"], correct:1,
-      explain:"Greta Thunberg — damals 16. Sie war mit einem Segelboot über den Atlantik gereist, um nicht zu fliegen.",
-      fact:"Pariser Klimaabkommen 2015: 195 Staaten beschließen 1,5°C-Ziel. COP30 Belém 2025 zeigt: nicht auf Kurs. 2024 war global das heißeste Jahr."},
-
     {format:'mc',
       q:"Welche Aussage über Hitlers Machtübernahme 1933 ist KORREKT?",
       opts:[
         "Die NSDAP hat in einer freien Wahl die absolute Mehrheit erhalten",
         "Hitler putschte sich mit Gewalt an die Macht",
-        "Reichspräsident Hindenburg ernannte Hitler — NSDAP war stärkste Partei, hatte aber keine Mehrheit",
+        "Reichspräsident Hindenburg ernannte Hitler — die NSDAP war stärkste Partei, hatte aber keine Mehrheit",
         "Eine Volksabstimmung brachte Hitler an die Macht"
       ], correct:2,
-      explain:"Hindenburg ernannte Hitler am 30.1.1933 zum Reichskanzler. NSDAP hatte zuletzt 33%, später unter Druck 43,9%. Nie eine demokratische Mehrheit.",
-      fact:"Wichtige Lektion: Demokratien sterben nicht immer durch Putsch — auch durch graduelle Aushöhlung von innen. Aktuell: Ungarn, Türkei."},
+      explain:"Hindenburg ernannte Hitler am 30.1.1933 zum Reichskanzler. Die NSDAP hatte zuletzt 33%, später unter Druck 43,9% — nie eine demokratische Mehrheit.",
+      fact:"Wichtige Lektion: Demokratien sterben nicht immer durch Putsch — oft auch durch graduelle Aushöhlung von innen. Beispiele heute: Ungarn, Türkei."},
 
-    {format:'year', min:1900, max:1950, target:1923,
-      q:"Wann erreichte die Hyperinflation in der Weimarer Republik ihren Höhepunkt — 1 Brot kostete 200 Milliarden Mark?",
-      when:"November · Berlin",
-      explain:"1923. Im November kostete 1 US-Dollar 4,2 Billionen Mark. Menschen heizten mit Geldscheinen — billiger als Holz.",
-      fact:"Die Inflation traf besonders die Mittelschicht — Sparbücher wurden wertlos. Wütende Bürger wandten sich Extremisten zu: NSDAP-Mitgliederzahlen explodierten 1923."},
-
-    {format:'mc',
-      q:"Was war der „Marshallplan“ (ab 1948)?",
-      context:"Europa lag in Trümmern. Die USA hatten Interesse daran, dass es wieder aufstand.",
-      opts:[
-        "US-Wirtschaftshilfe für den Wiederaufbau Westeuropas",
-        "Militärbündnis gegen die UdSSR",
-        "Ein DDR-Wirtschaftsplan",
-        "Ein UN-Klimaplan"
-      ], correct:0,
-      explain:"13 Mrd. USD (heute ~175 Mrd. €) für 16 westeuropäische Staaten — damit sie sich nicht dem Kommunismus zuwenden.",
-      fact:"2022/23 wurde der Begriff wieder aktuell: In der EU diskutiert man einen „Marshallplan für die Ukraine“ — geschätzt 350–500 Mrd. € für den Wiederaufbau."},
+    {format:'year', min:1930, max:1960, target:1945,
+      q:"Wann endete der Zweite Weltkrieg in Europa mit der bedingungslosen Kapitulation Deutschlands?",
+      context:"Hitler hatte am 30. April Selbstmord begangen. Die Rote Armee stand in Berlin, die Westalliierten am Rhein.",
+      when:"8. Mai · Reims & Berlin-Karlshorst",
+      explain:"1945. Heute ist der 8. Mai „Tag der Befreiung“. In Berlin und MV ist er gesetzlicher Gedenktag.",
+      fact:"Bundespräsident Richard von Weizsäcker erklärte 1985 in einer berühmten Rede: „Der 8. Mai war ein Tag der Befreiung.“ — vor ihm sahen viele Deutsche es noch als „Niederlage“."},
 
     {format:'risk',
-      q:"Was bedeutet das Wort „Holocaust“ / „Shoah“?",
+      q:"Welches dramatische Schicksal ereignete sich Anfang Mai 1945 vor der Küste Schleswig-Holsteins (Lübecker Bucht)?",
+      context:"Britische Jagdbomber griffen drei Schiffe an — sie wussten nicht, dass tausende KZ-Häftlinge an Bord waren.",
       opts:[
-        "Eine antike Tragödie",
-        "Systematischer Massenmord an Jüd:innen und anderen im Nationalsozialismus",
-        "Eine Krankheit",
-        "Ein religiöses Fest"
+        "U-Boot-Angriff auf Helgoland",
+        "Versenkung der „Cap Arcona“ mit ca. 7.000 KZ-Häftlingen",
+        "Sturmflut in Husum",
+        "Eisenbahn-Unglück in Kiel"
       ], correct:1,
-      explain:"Der NS-Völkermord — etwa 6 Mio. ermordete Juden, dazu Sinti, Roma, Behinderte, Homosexuelle, politisch Andersdenkende.",
-      fact:"Die letzten Überlebenden sind heute 90+. Der jüngste Auschwitz-Überlebende, der noch öffentlich spricht, ist Mitte 80. Die Generation der Zeitzeugen verschwindet."},
+      explain:"3. Mai 1945, Neustadt in Holstein. Die KZ-Häftlinge der „Cap Arcona“ und „Thielbek“ kamen aus Neuengamme — eine der größten Schiffskatastrophen der Geschichte, nur 6 Tage vor Kriegsende.",
+      fact:"Bis heute werden in Neustadt jedes Jahr Gedenkfeiern abgehalten. Tote werden noch immer angespült und in einer Massengrab-Anlage beigesetzt."},
 
     {format:'quote',
-      quote:{text:"Ich brauche keine Mitfahrgelegenheit, ich brauche Munition.", src:"Antwort auf US-Ausreiseangebot · 26. Februar 2022 · Kiew"},
-      q:"Welcher Präsident lehnte mit diesem Satz die Flucht aus seiner umkämpften Hauptstadt ab?",
-      opts:["Aleksandar Vučić","Wolodymyr Selenskyj","Recep Tayyip Erdoğan","Aleksandr Lukaschenko"], correct:1,
-      explain:"Wolodymyr Selenskyj — Schauspieler, Komiker, seit 2019 Präsident der Ukraine. Sein Bleiben in Kiew gilt als Mobilisierungs-Moment.",
-      fact:"2022 wurde Selenskyj „Time Person of the Year“. Westliche Geheimdienste hatten Kiew nur 72 Stunden gegeben."},
+      quote:{text:"Das tritt nach meiner Kenntnis … ist das sofort, unverzüglich.", src:"Pressekonferenz · 9. November 1989 · 18:53 Uhr"},
+      q:"Wer löste mit diesem stotternden Satz versehentlich den Mauerfall aus?",
+      opts:["Erich Honecker","Günter Schabowski","Egon Krenz","Helmut Kohl"], correct:1,
+      explain:"Günter Schabowski — SED-Politbüro-Mitglied. Er hatte den Zettel kurz vorher in die Hand gedrückt bekommen und las falsch ab.",
+      fact:"Eigentlich sollte die Regelung erst am nächsten Tag in Kraft treten. Sein „sofort, unverzüglich“ schickte Tausende Ost-Berliner zur Mauer. Die Grenzer ließen sie durch — ohne Befehl."},
+
+    {format:'mc',
+      q:"Wie viele Vertriebene und Flüchtlinge kamen nach 1945 nach Schleswig-Holstein — bei nur 1,6 Mio. Einwohnern?",
+      context:"Aus Ostpreußen, Pommern, Schlesien — viele zu Fuß, viele über die Ostsee. SH wurde zur Drehscheibe.",
+      opts:[
+        "Etwa 100.000",
+        "Etwa 500.000",
+        "Etwa 1,1 Millionen (rund 40% der Nachkriegsbevölkerung)",
+        "Etwa 50.000"
+      ], correct:2,
+      explain:"Rund 1,1 Mio. Vertriebene — knapp 40% der Nachkriegsbevölkerung in SH. Die Integration prägte das Land jahrzehntelang.",
+      fact:"Viele Familiengeschichten in SH beginnen erst 1945 — eure Großeltern oder Urgroßeltern stammten oft aus Königsberg, Stettin oder Danzig. Heute parallel zu aktuellen Geflüchteten-Debatten ein eindringliches Lehrstück."},
   ],
 
-  /* === STUFE 3 — Klasse 11–13 === */
+  /* === STUFE 3 — Klasse 11–13 (Aufklärung, 19. Jh., Imperialismus, 20. Jh., Gegenwart) === */
   3:[
     {format:'quote',
-      quote:{text:"From Stettin in the Baltic to Trieste in the Adriatic, an iron curtain has descended across the Continent.", src:"Westminster College, Fulton, Missouri · 5. März 1946"},
-      q:"Welcher Politiker prägte mit dieser Rede den Begriff des „Eisernen Vorhangs“?",
-      opts:["Franklin D. Roosevelt","Winston Churchill","Charles de Gaulle","Harry S. Truman"], correct:1,
-      explain:"Winston Churchill — zu dem Zeitpunkt nicht mehr britischer Premier, aber auf Einladung von US-Präsident Truman.",
-      fact:"Die Rede markiert den rhetorischen Beginn des Kalten Krieges — keine 10 Monate nach Kriegsende. Aus Alliierten wurden Feinde."},
+      quote:{text:"Habe Mut, dich deines eigenen Verstandes zu bedienen!", src:"„Was ist Aufklärung?“ · Berlinische Monatsschrift · Dezember 1784"},
+      q:"Welcher Philosoph aus Königsberg prägte mit diesem Satz die Aufklärung?",
+      context:"„Sapere aude!“ — der Wahlspruch der Aufklärung.",
+      opts:["Immanuel Kant","Friedrich Hegel","Johann Gottlieb Fichte","Gottfried Wilhelm Leibniz"], correct:0,
+      explain:"Immanuel Kant. Er definierte Aufklärung als „Ausgang des Menschen aus seiner selbstverschuldeten Unmündigkeit.“",
+      fact:"Kant lehrte sein ganzes Leben in Königsberg (heute Kaliningrad / Russland) und verließ die Stadt nie. Seine Werke prägen die moderne Ethik bis heute — der „kategorische Imperativ“ ist Grundlage der Menschenrechte."},
 
     {format:'year', min:1500, max:1700, target:1648,
       q:"Wann endete der Dreißigjährige Krieg mit dem Westfälischen Frieden?",
       context:"Münster und Osnabrück — die ersten europäischen Friedensverhandlungen ohne den Papst.",
-      when:"24. Oktober · Münster &amp; Osnabrück",
-      explain:"1648. Der Westfälische Friede gilt als Geburtsstunde des modernen Völkerrechts und der staatlichen Souveränität.",
-      fact:"Mancherorts in Deutschland überlebten weniger als 50% der Bevölkerung. Mecklenburg brauchte 100 Jahre für die Vorkriegs-Einwohnerzahl. Krieg, Hunger, Pest."},
+      when:"24. Oktober · Münster & Osnabrück",
+      explain:"1648. Geburtsstunde des modernen Völkerrechts und der staatlichen Souveränität („Westfälische Ordnung“).",
+      fact:"Mancherorts in Deutschland überlebten weniger als 50% der Bevölkerung. Mecklenburg brauchte 100 Jahre für die Vorkriegs-Einwohnerzahl."},
+
+    {format:'mc',
+      q:"Welches Werk prägte ab 1848 die wirtschaftliche und politische Theorie des 19. Jahrhunderts?",
+      context:"Ein Pamphlet, geschrieben in London, herausgegeben in deutscher Sprache — bis heute kontrovers.",
+      opts:[
+        "„Das Kapital“ von Adam Smith",
+        "„Manifest der Kommunistischen Partei“ von Marx und Engels",
+        "„Der Sozialvertrag“ von Rousseau",
+        "„Vom Kriege“ von Clausewitz"
+      ], correct:1,
+      explain:"Das „Manifest“ entstand kurz vor den Revolutionen von 1848. „Ein Gespenst geht um in Europa — das Gespenst des Kommunismus.“",
+      fact:"Marx hat „Das Kapital“ (1867) später geschrieben — Adam Smiths „Wohlstand der Nationen“ ist von 1776 (Liberalismus). Aktueller Bezug: Marxsche Analyse von Ungleichheit ist wieder Bestandteil der Debatte."},
+
+    {format:'year', min:1800, max:1900, target:1864,
+      q:"Wann verlor Dänemark im Deutsch-Dänischen Krieg endgültig die Herzogtümer Schleswig und Holstein?",
+      context:"Preußen und Österreich gegen Dänemark — Bismarck baute geschickt eine Allianz auf, die er später wieder zerschlagen sollte.",
+      when:"Düppeler Schanzen · 18. April",
+      explain:"1864. Die Erstürmung der Düppeler Schanzen am 18. April war die entscheidende Schlacht. Im Frieden von Wien musste Dänemark Schleswig, Holstein und Lauenburg abtreten.",
+      fact:"Dieses Datum ist in Dänemark bis heute ein nationales Trauma. Erst 1920 wurde Nordschleswig nach einer Volksabstimmung wieder dänisch. Die deutsch-dänische Grenze ist heute eine der friedlichsten Europas."},
+
+    {format:'risk',
+      q:"Welche zentrale Aussage prägt die Sonderwegs-These (Wehler, Kocka) zur deutschen Geschichte?",
+      context:"Bielefelder Schule, ab den 1960er Jahren — Versuch zu erklären, warum Deutschland in die NS-Diktatur abrutschte.",
+      opts:[
+        "Deutschland war einzigartig demokratisch",
+        "Deutsche Eliten blockierten Demokratisierung im 19. Jh. — ein „verspäteter“ Weg in die Moderne",
+        "Deutschland hatte keinen besonderen Weg",
+        "Nur die Wirtschaftskrise erklärt den NS-Aufstieg"
+      ], correct:1,
+      explain:"Wehler und Kocka argumentierten: deutsche Bürgerlichkeit konnte sich nicht voll durchsetzen, Adel und Militär behielten zu viel Macht. Kritik (Blackbourn/Eley): kein Sonderweg, sondern westliche Variante.",
+      fact:"Die postkoloniale Wende stellt die These erneut in Frage — wer Kolonialgeschichte einbezieht, sieht westliche „Normalität“ ganz anders. Aktueller Historikerstreit 2.0 (seit 2020)."},
+
+    {format:'quote',
+      quote:{text:"Im Frieden begraben die Söhne ihre Väter. Im Krieg begraben die Väter ihre Söhne.", src:"Vermutet · zugeschrieben Herodot · 5. Jh. v. Chr."},
+      q:"Welcher Krieg machte diesen antiken Satz zur grausamen Realität — und prägte Europas 20. Jahrhundert?",
+      opts:[
+        "Der Erste Weltkrieg",
+        "Der Krimkrieg",
+        "Der Deutsch-Französische Krieg 1870/71",
+        "Der Burenkrieg"
+      ], correct:0,
+      explain:"Erster Weltkrieg. 17 Mio. Tote, ein Großteil junge Männer. Eine ganze Generation Europas verblutete in den Schützengräben Flanderns und an der Somme.",
+      fact:"Erich Maria Remarques „Im Westen nichts Neues“ (1929) wurde Welterfolg — bei den Nazis verboten und verbrannt. Die Neuverfilmung 2022 gewann 4 Oscars."},
+
+    {format:'mc',
+      q:"Welche Großmacht-Konferenz teilte 1884/85 Afrika unter europäischen Kolonialmächten auf — ohne Beteiligung Afrikas?",
+      context:"Reichskanzler Bismarck war Gastgeber. Es war kein Kolonialismus-Beginn, aber sein zynischer Höhepunkt.",
+      opts:[
+        "Wiener Kongress",
+        "Berliner Kongo-Konferenz",
+        "Pariser Friedenskonferenz",
+        "Den Haager Konferenz"
+      ], correct:1,
+      explain:"Berliner Kongo-Konferenz (15.11.1884 – 26.2.1885). Auf einer Landkarte wurden Grenzen mit dem Lineal gezogen — Folgen bis heute (Konflikte, willkürliche Staatsgrenzen).",
+      fact:"Deutschland war erst seit kurzem Kolonialmacht. In „Deutsch-Südwestafrika“ (heute Namibia) wurde 1904-08 der Völkermord an den Herero & Nama begangen — von Deutschland erst 2021 offiziell anerkannt."},
+
+    {format:'year', min:1900, max:1950, target:1920,
+      q:"Wann fand die Volksabstimmung über die deutsch-dänische Grenze in Schleswig statt?",
+      context:"Nach dem Versailler Vertrag durften die Schleswiger selbst entscheiden, ob sie dänisch oder deutsch werden.",
+      when:"10. Februar (Nord) · 14. März (Mitte) · Schleswig",
+      explain:"1920. Im Norden stimmten 75% für Dänemark, in der Mitte (Flensburg) 80% für Deutschland. So entstand die heutige Grenze.",
+      fact:"Die deutsch-dänische Grenze von 1920 ist die einzige Grenze Deutschlands, die seither friedlich akzeptiert geblieben ist. Auf beiden Seiten leben heute Minderheiten (Dänen in SH, Deutsche in Nordschleswig) mit eigenen Schulen und Parteien (SSW)."},
+
+    {format:'risk',
+      q:"Welche These prägt die postkolonialen Studien (Said, Spivak, Mbembe) und beeinflusst heute die Geschichtswissenschaft?",
+      opts:[
+        "Kolonialismus ist ein abgeschlossenes Kapitel",
+        "Westliches Wissen war stets neutral",
+        "Kolonialgeschichte prägt globale Ungleichheit, Wissen, Migration bis heute",
+        "Kolonialismus war wirtschaftlich für die Kolonien vorteilhaft"
+      ], correct:2,
+      explain:"Edward Said („Orientalismus“ 1978), Gayatri Spivak, Achille Mbembe. Postkoloniale Theorie: Koloniale Macht wirkt in Sprache, Wissenschaft, Wirtschaft fort.",
+      fact:"2022 gab Deutschland erstmals 22 Benin-Bronzen an Nigeria zurück. Geschätzt 90% afrikanischer Kulturgüter befinden sich noch in europäischen Museen — die Debatte ist hochpolitisch."},
+
+    {format:'quote',
+      quote:{text:"Die Mauer wird in 50 und auch in 100 Jahren noch bestehen, wenn die dazu vorhandenen Gründe nicht beseitigt sind.", src:"Pressekonferenz · 19. Januar 1989"},
+      q:"Wer sprach diese Worte — keine 10 Monate vor dem Mauerfall?",
+      opts:["Helmut Kohl","Hans-Dietrich Genscher","Erich Honecker","Egon Krenz"], correct:2,
+      explain:"Erich Honecker — Staatsratsvorsitzender der DDR. Eine der berühmtesten politischen Fehleinschätzungen der Geschichte.",
+      fact:"Auch CIA und BND prognostizierten 1988 noch eine stabile DDR. Politische Großmacht-Vorhersagen sind notorisch unzuverlässig — Demut ist angebracht. Heute wieder relevant: Ukraine 2022, Trump 2024, KI-Wende."},
 
     {format:'mc',
       q:"Welche These des Politologen Francis Fukuyama (1992) gilt heute als überholt — auch von ihm selbst?",
@@ -936,89 +1037,17 @@ const Q = {
       explain:"„The End of History?“ (1989/1992). Fukuyama postulierte den endgültigen Sieg der liberalen Demokratie.",
       fact:"Heute: Ukraine-Krieg, Trump-Ära, China-Aufstieg, Demokratie-Erosion. Fukuyama hat die These mehrfach revidiert. Huntingtons „Kampf der Kulturen“ wirkt heute treffender."},
 
-    {format:'risk',
-      q:"Was war das Kernanliegen der „Frankfurter Schule“ (Adorno, Horkheimer, Marcuse)?",
-      opts:[
-        "Verteidigung der freien Marktwirtschaft",
-        "Aufklärung kann in Barbarei umschlagen — kritische Theorie der Gesellschaft",
-        "Wiederherstellung der Monarchie",
-        "Erforschung der antiken Philosophie"
-      ], correct:1,
-      explain:"„Dialektik der Aufklärung“ (1944): Versuch zu erklären, wie aus der Aufklärung der Holocaust werden konnte.",
-      fact:"Adornos Diagnose der „Kulturindustrie“ wird heute auf TikTok, KI-Algorithmen, Social Media angewandt — die Themen sind frappierend aktuell."},
-
-    {format:'quote',
-      quote:{text:"Die Mauer wird in 50 und auch in 100 Jahren noch bestehen, wenn die dazu vorhandenen Gründe nicht beseitigt sind.", src:"Pressekonferenz · 19. Januar 1989"},
-      q:"Wer sprach diese Worte — keine 10 Monate vor dem Mauerfall?",
-      opts:["Helmut Kohl","Hans-Dietrich Genscher","Erich Honecker","Egon Krenz"], correct:2,
-      explain:"Erich Honecker — Staatsratsvorsitzender der DDR. Eine der berühmtesten politischen Fehleinschätzungen der Geschichte.",
-      fact:"Auch CIA und BND prognostizierten 1988 noch eine stabile DDR. Politische Großmacht-Vorhersagen sind notorisch unzuverlässig — Demut ist angebracht."},
-
-    {format:'year', min:1900, max:1950, target:1929,
-      q:"Wann brach an der Wall Street der „Schwarze Freitag“ / „Black Tuesday“ aus?",
-      when:"24./29. Oktober · NYC",
-      explain:"1929 — in den USA „Black Tuesday“ (29.10.), in Europa wegen Zeitverschiebung „Schwarzer Freitag“ (25.10.).",
-      fact:"Die Krise stürzte die Weimarer Republik endgültig ins Chaos. NSDAP-Wähleranteil sprang von 2,6% (1928) auf 18,3% (1930), 37,3% (1932)."},
-
     {format:'mc',
-      q:"Welcher Begriff beschreibt die These, dass Deutschland einen „Sonderweg“ zur Diktatur ging?",
-      context:"Eine der wichtigsten geschichtswissenschaftlichen Debatten des 20. Jahrhunderts.",
-      opts:[
-        "Stunde-Null-These",
-        "Sonderwegs-These (Wehler, Kocka)",
-        "Goldhagen-These",
-        "Fischer-Kontroverse"
-      ], correct:1,
-      explain:"Wehler / Kocka argumentierten: deutsche Eliten blockierten Demokratisierung im 19. Jh. Kritik (Blackbourn/Eley): kein Sonderweg, sondern westliche Variante.",
-      fact:"Die postkoloniale Wende stellt die Sonderwegs-These erneut in Frage — wer Kolonialgeschichte einbezieht, sieht westliche „Normalität“ ganz anders."},
-
-    {format:'quote',
-      quote:{text:"Wir sind das Volk!", src:"Montagsdemonstrationen Leipzig · ab Herbst 1989"},
-      q:"Was forderten die DDR-Demonstranten mit diesem Sprechchor ursprünglich?",
-      opts:[
-        "Sofortige Wiedervereinigung mit der BRD",
-        "Demokratische Reformen IN der DDR",
-        "Rückkehr zum Sozialismus alten Stils",
-        "Anschluss an die UdSSR"
-      ], correct:1,
-      explain:"Anfangs: Reform der DDR, Reisefreiheit, freie Wahlen. Erst Ende 1989 schwenkte der Slogan zu „Wir sind EIN Volk“ — Ruf nach Wiedervereinigung.",
-      fact:"Bittere Ironie: „Wir sind das Volk“ wird seit 2014 von Pegida und AfD vereinnahmt. Originalprotagonisten der Friedlichen Revolution wehren sich gegen die Aneignung."},
-
-    {format:'risk',
-      q:"Welche These der Postcolonial Studies (Said, Mbembe, Spivak) prägt heute die geschichtswissenschaftliche Debatte?",
-      opts:[
-        "Kolonialismus ist ein abgeschlossenes Kapitel",
-        "Westliches Wissen war neutral",
-        "Kolonialgeschichte prägt globale Ungleichheit, Wissen, Migration bis heute",
-        "Nur Großbritannien war Kolonialmacht"
-      ], correct:2,
-      explain:"Edward Said („Orientalismus“ 1978), Spivak, Mbembe: Koloniale Macht wirkt in Sprache, Wissenschaft, Wirtschaft fort.",
-      fact:"2022 gab Deutschland erstmals 22 Benin-Bronzen an Nigeria zurück. Geschätzt 90% afrikanischer Kulturgüter befinden sich noch in europäischen Museen."},
-
-    {format:'year', min:1900, max:1970, target:1933,
-      q:"Wann erlangte die NSDAP über das Ermächtigungsgesetz die Diktatur-Vollmacht?",
-      when:"24. März · Berlin · Reichstag",
-      explain:"1933. Mit 444 Ja zu 94 Nein (nur SPD) wurde die Verfassung praktisch außer Kraft gesetzt. KPD-Abgeordnete waren bereits verhaftet oder geflohen.",
-      fact:"Das Ermächtigungsgesetz ist DAS Lehrbuch-Beispiel für „Demokratien sterben durch demokratische Mittel“. Heute warnen Politikwissenschaftler vor ähnlichen Mustern."},
-
-    {format:'mc',
-      q:"Welches Phänomen beschreibt der Begriff „Anthropozän“ (Crutzen, ~2000)?",
-      context:"Eine vorgeschlagene neue erdgeschichtliche Epoche.",
+      q:"Welches Phänomen beschreibt der Begriff „Anthropozän“ (Crutzen, um 2000)?",
+      context:"Eine vorgeschlagene neue erdgeschichtliche Epoche — bis heute wissenschaftlich umstritten.",
       opts:[
         "Eine antike Hochkultur",
-        "Die These einer durch den Menschen geprägten erdgeschichtlichen Epoche",
+        "Eine durch den Menschen geprägte erdgeschichtliche Epoche",
         "Ein neuer Kontinent",
         "Eine Migrationsbewegung"
       ], correct:1,
-      explain:"Anthropos (griech.) = Mensch. Crutzen: Der Mensch ist zur geologischen Kraft geworden — CO₂, Plastik, Atomtests.",
-      fact:"2024 entschied die Internationale Stratigraphie-Kommission: das Anthropozän wird NICHT offiziell als geologische Epoche anerkannt. Halb wissenschaftliche, halb politische Debatte."},
-
-    {format:'quote',
-      quote:{text:"Aufgabe der Politik ist es nicht, Werte zu setzen, sondern die Bedingungen zu schaffen, unter denen Menschen ihre Werte verwirklichen können.", src:"Vermutet · Wendezeit 1989/90"},
-      q:"Welcher liberale Außenminister prägte die dt. Wiedervereinigung diplomatisch?",
-      opts:["Walter Scheel","Hans-Dietrich Genscher","Otto Graf Lambsdorff","Wolfgang Schäuble"], correct:1,
-      explain:"Hans-Dietrich Genscher (FDP) — Außenminister 1974–1992. Sein Auftritt auf dem Balkon der Prager Botschaft 1989 ist legendär.",
-      fact:"Der unvollendete Satz vom 30.9.1989: „Ich bin zu Ihnen gekommen, um Ihnen mitzuteilen, dass heute Ihre Ausreise…“ — der Rest ging im Jubel unter. Vielleicht der wichtigste Halbsatz der Nachkriegsgeschichte."},
+      explain:"Anthropos (griech.) = Mensch. Crutzen: Der Mensch ist zur geologischen Kraft geworden — CO₂, Plastik, Atomtests, Massentierhaltung.",
+      fact:"2024 entschied die Internationale Stratigraphie-Kommission: das Anthropozän wird NICHT offiziell als geologische Epoche anerkannt. Halb wissenschaftliche, halb politische Debatte. Verbindet Geschichte mit Klimakrise."},
   ]
 };
 
@@ -1291,7 +1320,7 @@ function initLobby(){
       state.mode = b.dataset.mode;
       const hint = document.querySelector('.lobby-foot .hint');
       if(state.mode === 'multi'){
-        hint.innerHTML = '<b>Multi-Device:</b> Nach „Show starten" erscheint ein QR-Code. Schüler:innen scannen ihn → werden automatisch Teams zugewiesen. Buzzern am Handy. <kbd>Leertaste</kbd> = Weiter.';
+        hint.innerHTML = '<b>Multi-Device:</b> Nach „Show starten“ erscheint ein QR-Code. Schüler:innen scannen ihn → werden automatisch Teams zugewiesen. Buzzern am Handy. <kbd>Leertaste</kbd> = Weiter.';
       } else {
         hint.innerHTML = '<b>So funktioniert\'s:</b> Lehrer:in liest die Frage am Beamer vor. Wer es weiß, drückt <kbd>1</kbd>–<kbd>4</kbd> auf der Tastatur (oder klickt die Team-Karte) und buzzert. <kbd>Leertaste</kbd> = Weiter.';
       }
@@ -2251,7 +2280,7 @@ function renderClientBuzzer(){
   const t = state.clientTeam;
   const quoteHtml = q.quote ? `
     <div class="quote-mini">
-      „${escapeHtml(q.quote.text)}"
+      „${escapeHtml(q.quote.text)}“
       <div class="src">— ${escapeHtml(q.quote.src)}</div>
     </div>` : '';
   const ctxHtml = q.context ? `
