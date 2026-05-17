@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ZEITZEUGE · Die Geschichts-Quizshow für die Vertretungsstunde</title>
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#13131c;
+    --line:#23232f;
+    --text:#f5f5f7;
+    --muted:#8e8ea0;
+    --accent:#ffb347;
+    --t1:#ff5c7c;
+    --t2:#5ec8ff;
+    --t3:#3ddc97;
+    --t4:#ffd166;
+    --good:#3ddc97;
+    --bad:#ff5c7c;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+  input,select{font-family:inherit;color:inherit}
+  kbd{font-family:'SF Mono','Menlo',monospace;font-size:11px;padding:2px 6px;background:var(--line);border-radius:4px;border:1px solid #2a2a36;font-weight:700}
+
+  .mono{font-family:'SF Mono','JetBrains Mono','Menlo',monospace;letter-spacing:.02em}
+
+  /* ===== Screens ===== */
+  .screen{display:none;min-height:100vh}
+  .screen.active{display:flex;flex-direction:column}
+
+  /* ===== Lobby ===== */
+  #lobby{padding:48px clamp(20px,5vw,80px);justify-content:center;background:radial-gradient(ellipse at top,#1a1830 0%,var(--bg) 70%)}
+  .lobby-head{margin-bottom:40px;max-width:1200px;width:100%;margin-inline:auto}
+  .tag{font-size:12px;color:var(--accent);letter-spacing:.4em;text-transform:uppercase;font-weight:700;margin-bottom:14px;display:block}
+  .logo{
+    font-size:clamp(56px,9vw,128px);
+    font-weight:900;letter-spacing:-.05em;line-height:.85;
+    background:linear-gradient(180deg,#fff 30%,#888);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    position:relative;display:inline-block;
+  }
+  .logo::after{content:"·";color:var(--accent);-webkit-text-fill-color:var(--accent);margin-left:8px;animation:blink 1.4s steps(1) infinite;display:inline-block}
+  @keyframes blink{50%{opacity:0}}
+  .sub{color:var(--muted);font-size:16px;max-width:620px;line-height:1.55;margin-top:14px}
+
+  .lobby-grid{
+    max-width:1200px;width:100%;margin-inline:auto;
+    display:grid;grid-template-columns:1fr 1fr;gap:24px;
+  }
+  @media (max-width:900px){.lobby-grid{grid-template-columns:1fr}}
+
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px}
+  .panel h2{font-size:12px;color:var(--muted);letter-spacing:.3em;text-transform:uppercase;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .panel h2::before{content:"";display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%}
+
+  .stufen-list{display:flex;flex-direction:column;gap:10px}
+  .stufe-pick{
+    display:flex;align-items:center;gap:18px;padding:16px 20px;
+    background:transparent;border:2px solid var(--line);border-radius:14px;
+    transition:all .15s;text-align:left;width:100%;
+  }
+  .stufe-pick:hover{border-color:var(--accent);background:rgba(255,179,71,.06)}
+  .stufe-pick.active{border-color:var(--accent);background:rgba(255,179,71,.12)}
+  .stufe-pick .num{font-size:34px;font-weight:900;color:var(--accent);width:50px;text-align:center;letter-spacing:-.04em;font-family:'SF Mono',monospace}
+  .stufe-pick .info h3{font-size:17px;font-weight:700;margin-bottom:2px}
+  .stufe-pick .info p{font-size:13px;color:var(--muted);line-height:1.4}
+
+  .teams{display:flex;flex-direction:column;gap:10px}
+  .team-row{
+    display:flex;align-items:center;gap:12px;padding:12px 14px;
+    background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;
+  }
+  .swatch{width:24px;height:24px;border-radius:8px;flex-shrink:0;cursor:pointer;border:2px solid rgba(255,255,255,.1);transition:transform .15s}
+  .swatch:hover{transform:scale(1.1)}
+  .team-row input{
+    flex:1;background:transparent;border:0;outline:none;font-size:16px;font-weight:600;padding:6px 0;
+  }
+  .team-row .x{color:var(--muted);font-size:18px;padding:4px 8px;border-radius:8px;transition:all .15s}
+  .team-row .x:hover{background:rgba(255,92,124,.15);color:var(--bad)}
+  .add-team{
+    padding:14px;border:2px dashed var(--line);border-radius:12px;color:var(--muted);
+    width:100%;font-weight:600;font-size:14px;transition:all .15s;margin-top:6px;
+  }
+  .add-team:hover{border-color:var(--accent);color:var(--accent)}
+
+  .lobby-foot{
+    max-width:1200px;width:100%;margin:32px auto 0;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+  }
+  .hint{color:var(--muted);font-size:13px;max-width:560px;line-height:1.55}
+  .hint b{color:var(--text)}
+  .start-btn{
+    padding:18px 36px;background:var(--accent);color:#0a0a0f;
+    font-size:18px;font-weight:800;border-radius:14px;letter-spacing:.02em;
+    transition:all .2s;box-shadow:0 10px 30px rgba(255,179,71,.3);
+  }
+  .start-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(255,179,71,.45)}
+
+  /* ===== Show ===== */
+  #show{padding:0;background:radial-gradient(ellipse at 50% 0%,#1a1830 0%,#0a0a0f 60%)}
+  .show-head{
+    padding:16px clamp(16px,3vw,40px);
+    display:flex;justify-content:space-between;align-items:center;gap:20px;
+    border-bottom:1px solid var(--line);
+  }
+  .round-counter{font-family:'SF Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.3em;text-transform:uppercase}
+  .round-counter b{color:var(--accent);font-size:18px;margin:0 4px}
+  .icon-btn{
+    padding:8px 12px;border-radius:10px;background:transparent;color:var(--muted);
+    font-size:13px;font-weight:600;transition:all .15s;
+  }
+  .icon-btn:hover{color:var(--text);background:var(--panel)}
+
+  .scoreboard{
+    padding:14px clamp(16px,3vw,40px);
+    display:flex;gap:12px;flex-wrap:wrap;
+  }
+  .score-card{
+    flex:1;min-width:170px;padding:14px 18px;
+    background:var(--panel);border:1.5px solid var(--line);border-radius:12px;
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    transition:all .2s;cursor:pointer;position:relative;overflow:hidden;
+  }
+  .score-card.buzz{animation:buzz .4s ease}
+  @keyframes buzz{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+  .score-card.active{transform:translateY(-2px)}
+  .score-card.active::after{
+    content:"";position:absolute;inset:-2px;border:2px solid var(--c);
+    border-radius:13px;pointer-events:none;box-shadow:0 0 24px var(--c);
+    animation:glow 1.5s ease infinite;
+  }
+  @keyframes glow{50%{opacity:.5}}
+  .score-card .tname{font-weight:700;font-size:14.5px;color:var(--c)}
+  .score-card .tname .num{color:var(--muted);font-weight:500;font-size:11.5px;margin-left:8px;font-family:'SF Mono',monospace}
+  .score-card .pts{font-family:'SF Mono',monospace;font-size:26px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+  .score-card .delta{
+    position:absolute;right:18px;top:50%;transform:translateY(-50%);
+    font-family:'SF Mono',monospace;font-size:22px;font-weight:800;color:var(--good);
+    opacity:0;pointer-events:none;
+  }
+  .score-card .delta.show{animation:pop 1.6s ease forwards}
+  .score-card .delta.minus{color:var(--bad)}
+  @keyframes pop{0%{opacity:0;transform:translateY(0)}25%{opacity:1;transform:translateY(-24px)}100%{opacity:0;transform:translateY(-50px)}}
+
+  /* ---- Stage ---- */
+  .stage{
+    flex:1;padding:28px clamp(16px,3vw,60px) 20px;
+    max-width:1400px;width:100%;margin:0 auto;
+    display:flex;flex-direction:column;
+  }
+  .q-type-badge{
+    display:inline-flex;align-items:center;gap:12px;
+    font-size:11px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:18px;
+  }
+  .q-type-badge::before{content:"";width:28px;height:1.5px;background:var(--accent)}
+
+  .q-text{
+    font-size:clamp(28px,4.3vw,52px);font-weight:800;letter-spacing:-.02em;line-height:1.1;
+    margin-bottom:24px;
+  }
+
+  .q-context{
+    background:linear-gradient(135deg,rgba(255,179,71,.08),transparent);
+    border-left:3px solid var(--accent);
+    padding:16px 22px;margin-bottom:22px;border-radius:0 12px 12px 0;
+    font-size:15.5px;line-height:1.6;color:#e0e0e8;max-width:880px;
+  }
+  .q-context .when{
+    font-family:'SF Mono',monospace;font-size:11px;color:var(--accent);
+    letter-spacing:.25em;text-transform:uppercase;margin-bottom:6px;display:block;font-weight:700;
+  }
+
+  /* Quote card (Quellen-Karte) */
+  .quote-card{
+    background:#f5f1e8;color:#1a1a1a;padding:30px 36px;border-radius:4px;
+    transform:rotate(-.8deg);box-shadow:0 30px 60px rgba(0,0,0,.45),0 8px 18px rgba(0,0,0,.3);
+    max-width:760px;margin:0 0 26px;position:relative;
+    font-family:'Georgia','Times New Roman',serif;
+  }
+  .quote-card::after{
+    content:"";position:absolute;top:14px;right:-12px;width:80px;height:24px;
+    background:rgba(255,179,71,.5);transform:rotate(8deg);
+    background-image:repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(0,0,0,.05) 4px,rgba(0,0,0,.05) 6px);
+  }
+  .quote-card .src-label{
+    font-family:'SF Mono',monospace;font-size:9.5px;color:#999;
+    letter-spacing:.3em;text-transform:uppercase;margin-bottom:14px;font-weight:700;
+  }
+  .quote-card .q-mark{font-size:80px;line-height:0;color:#d8c8a0;float:left;margin:24px 8px 0 0;font-family:Georgia,serif}
+  .quote-card .quote{font-size:clamp(20px,2.6vw,28px);font-weight:600;line-height:1.35;margin-bottom:14px}
+  .quote-card .src{font-size:13px;color:#666;font-style:italic;border-top:1px solid #ddd;padding-top:12px;clear:both}
+
+  /* Options */
+  .options{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:1000px;
+  }
+  .opt{
+    display:flex;align-items:center;gap:14px;
+    padding:20px 22px;background:var(--panel);border:2px solid var(--line);
+    border-radius:14px;transition:all .15s;text-align:left;font-size:17px;font-weight:600;line-height:1.3;
+  }
+  .opt:hover:not(:disabled){border-color:var(--accent);background:rgba(255,179,71,.06)}
+  .opt:disabled{cursor:default}
+  .opt .letter{
+    width:34px;height:34px;border-radius:9px;background:var(--line);
+    display:grid;place-items:center;font-weight:800;flex-shrink:0;
+    font-family:'SF Mono',monospace;font-size:15px;
+  }
+  .opt.right{border-color:var(--good);background:rgba(61,220,151,.1)}
+  .opt.right .letter{background:var(--good);color:#0a3a23}
+  .opt.wrong{border-color:var(--bad);background:rgba(255,92,124,.08);opacity:.7}
+  .opt.wrong .letter{background:var(--bad);color:#3a0a18}
+  .opt.locked{opacity:.4;pointer-events:none}
+
+  /* Year input */
+  .year-stage{display:flex;flex-direction:column;align-items:center;gap:18px;padding:14px 0}
+  .year-input-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+  .team-year-card{
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    padding:18px 22px;background:var(--panel);border:2px solid var(--c);border-radius:14px;min-width:170px;
+  }
+  .team-year-card .tn{font-size:13px;font-weight:700;color:var(--c);letter-spacing:.08em;text-transform:uppercase}
+  .year-input{
+    width:140px;font-size:36px;font-weight:800;text-align:center;
+    background:transparent;border:0;outline:0;color:var(--text);
+    border-bottom:2px solid var(--c);padding:4px 8px;font-family:'SF Mono',monospace;
+  }
+  .year-input::-webkit-outer-spin-button,.year-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .year-input[type=number]{-moz-appearance:textfield}
+  .reveal-target{
+    font-size:clamp(56px,8vw,96px);font-weight:900;letter-spacing:-.04em;color:var(--accent);
+    text-align:center;margin:14px 0;font-family:'SF Mono',monospace;
+  }
+  .reveal-info{color:#dadada;text-align:center;font-size:15px;line-height:1.6;max-width:680px;margin:0 auto}
+
+  /* Buzzer prompt */
+  .buzzer-prompt{
+    margin-top:18px;padding:16px 22px;
+    background:rgba(255,179,71,.1);border:1.5px solid var(--accent);border-radius:14px;
+    display:flex;align-items:center;gap:14px;font-size:15px;font-weight:600;line-height:1.45;
+  }
+  .buzzer-prompt::before{content:"⚡";font-size:24px}
+  .buzzer-prompt.bad{background:rgba(255,92,124,.08);border-color:var(--bad)}
+  .buzzer-prompt.bad::before{content:"🥷"}
+
+  /* Stage foot */
+  .stage-foot{
+    padding:16px clamp(16px,3vw,40px);border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .timer-display{display:flex;align-items:center;gap:14px}
+  .timer-num{
+    font-family:'SF Mono',monospace;font-size:30px;font-weight:800;
+    color:var(--text);font-variant-numeric:tabular-nums;min-width:48px;text-align:center;
+  }
+  .timer-num.warn{color:var(--bad);animation:pulse .7s ease-in-out infinite}
+  @keyframes pulse{50%{transform:scale(1.12)}}
+  .timer-bar{width:200px;height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+  .timer-fill{height:100%;background:linear-gradient(90deg,var(--good),var(--accent),var(--bad));width:100%}
+
+  .btn{
+    padding:13px 26px;background:var(--accent);color:#0a0a0f;
+    font-size:15px;font-weight:700;border-radius:12px;
+    transition:all .15s;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,179,71,.4)}
+  .btn.ghost{background:transparent;color:var(--text);border:1.5px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--text);transform:none;box-shadow:none}
+
+  /* Reveal card */
+  .reveal-card{
+    margin-top:22px;padding:22px 26px;background:var(--panel);
+    border:1.5px solid var(--line);border-radius:14px;max-width:1000px;
+  }
+  .reveal-head{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:12px;flex-wrap:wrap;gap:10px;
+  }
+  .reveal-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;
+    padding:5px 12px;border-radius:99px;
+  }
+  .reveal-tag.right{background:rgba(61,220,151,.15);color:var(--good)}
+  .reveal-tag.wrong{background:rgba(255,92,124,.15);color:var(--bad)}
+  .reveal-tag.neutral{background:rgba(148,132,214,.15);color:#9484d6}
+  .reveal-explain{font-size:16px;line-height:1.6;color:#dadada}
+  .reveal-fact{
+    margin-top:14px;padding:14px 18px;border-radius:12px;
+    background:rgba(148,132,214,.06);border:1px solid rgba(148,132,214,.2);
+    font-size:14px;line-height:1.55;color:#cfcfdf;
+  }
+  .reveal-fact b{color:#b8a8f0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;display:block;margin-bottom:5px}
+
+  /* Year result rows */
+  .yr-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px 16px;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;border-left:3px solid var(--c);
+  }
+  .yr-row b{color:var(--c)}
+  .yr-pts{font-family:'SF Mono',monospace;font-weight:800;font-size:17px}
+  .yr-pts.good{color:var(--good)}
+  .yr-pts.zero{color:var(--muted)}
+
+  /* Risk team picker */
+  .risk-pick-grid{display:flex;gap:12px;flex-wrap:wrap}
+  .risk-pick{
+    display:flex;align-items:center;gap:14px;
+    padding:18px 24px;background:var(--panel);border:2px solid var(--c);
+    border-radius:14px;transition:all .15s;font-size:17px;font-weight:600;
+  }
+  .risk-pick:hover{background:rgba(255,255,255,.04);transform:translateY(-2px)}
+  .risk-pick .num{
+    width:34px;height:34px;border-radius:9px;background:var(--c);color:#0a0a0f;
+    display:grid;place-items:center;font-weight:800;font-family:'SF Mono',monospace;
+  }
+  .bet-grid{display:flex;gap:12px;flex-wrap:wrap}
+  .bet-btn{
+    padding:18px 26px;background:var(--panel);border:2px solid var(--line);
+    border-radius:14px;font-family:'SF Mono',monospace;font-size:24px;font-weight:800;
+    transition:all .15s;
+  }
+  .bet-btn:hover{border-color:var(--accent);background:rgba(255,179,71,.06);transform:translateY(-2px)}
+
+  /* ===== Final ===== */
+  #final{padding:60px clamp(20px,5vw,80px);align-items:center;justify-content:center;text-align:center}
+  .final-trophy{font-size:clamp(100px,16vw,180px);line-height:1;margin-bottom:10px;animation:trophy 2s ease infinite}
+  @keyframes trophy{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+  .final-winner{font-size:clamp(38px,6vw,68px);font-weight:900;letter-spacing:-.03em;margin-bottom:6px}
+  .final-sub{font-size:17px;color:var(--muted);margin-bottom:36px}
+  .final-board{max-width:560px;width:100%;display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
+  .final-row{
+    display:flex;align-items:center;gap:18px;padding:18px 22px;
+    background:var(--panel);border:1.5px solid var(--line);border-radius:14px;text-align:left;
+    border-left:4px solid var(--c);
+  }
+  .final-row.win{background:linear-gradient(90deg,rgba(255,179,71,.08),transparent)}
+  .final-rank{font-family:'SF Mono',monospace;font-size:22px;font-weight:800;color:var(--muted);width:30px}
+  .final-name{flex:1;font-size:19px;font-weight:700;color:var(--c)}
+  .final-pts{font-family:'SF Mono',monospace;font-size:24px;font-weight:800}
+
+  /* Confetti */
+  .confetti{position:fixed;width:8px;height:14px;top:-20px;pointer-events:none;z-index:1000;animation:fall var(--d) linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+  .hidden{display:none !important}
+  @media (max-width:700px){.options{grid-template-columns:1fr}.q-text{font-size:26px}}
+</style>
+</head>
+<body>
+
+<!-- ============ LOBBY ============ -->
+<div id="lobby" class="screen active">
+  <div class="lobby-head">
+    <span class="tag">Vertretungs-Quizshow · 25–30 Min · Klasse 5–13</span>
+    <h1 class="logo">ZEITZEUGE</h1>
+    <p class="sub">Beamer-Show fürs Klassenzimmer. Teams einteilen, eine Stufe wählen, los geht's.
+      Kein Login, kein Internet, keine Konfiguration. Buzzern per Tastatur (1–4) oder Klick.</p>
+  </div>
+
+  <div class="lobby-grid">
+    <div class="panel">
+      <h2>Schwierigkeit</h2>
+      <div class="stufen-list">
+        <button class="stufe-pick" data-stufe="1">
+          <span class="num">I</span>
+          <span class="info">
+            <h3>Spurensucher</h3>
+            <p>Klasse 5–7 · Grundwissen, berühmte Daten, einfache Quellen</p>
+          </span>
+        </button>
+        <button class="stufe-pick active" data-stufe="2">
+          <span class="num">II</span>
+          <span class="info">
+            <h3>Zeitdetektive</h3>
+            <p>Klasse 8–10 · 19./20. Jh., Quellen lesen, aktuelle Bezüge</p>
+          </span>
+        </button>
+        <button class="stufe-pick" data-stufe="3">
+          <span class="num">III</span>
+          <span class="info">
+            <h3>Geschichts-Profis</h3>
+            <p>Klasse 11–13 · Quellenkritik, Interpretation, Debattenstoff</p>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Teams · Wer duelliert sich?</h2>
+      <div class="teams" id="teamList"></div>
+      <button class="add-team" id="addTeamBtn">+ Team hinzufügen (max. 4)</button>
+    </div>
+  </div>
+
+  <div class="lobby-foot">
+    <p class="hint">
+      <b>So funktioniert's:</b> Lehrer:in liest die Frage am Beamer vor. Wer es weiß, drückt <kbd>1</kbd>–<kbd>4</kbd>
+      auf der Tastatur (oder klickt die Team-Karte) und buzzert. <kbd>Leertaste</kbd> = Weiter.
+    </p>
+    <button class="start-btn" id="startBtn">▶  Show starten</button>
+  </div>
+</div>
+
+<!-- ============ SHOW ============ -->
+<div id="show" class="screen">
+  <div class="show-head">
+    <div class="round-counter">Runde <b id="roundNum">1</b> / <span id="roundTotal">12</span> · <span id="stufeLabel">Stufe II</span></div>
+    <div style="display:flex;gap:6px">
+      <button class="icon-btn" id="exitBtn">↩  Verlassen</button>
+    </div>
+  </div>
+
+  <div class="scoreboard" id="scoreboard"></div>
+
+  <div class="stage" id="stage"></div>
+
+  <div class="stage-foot">
+    <div class="timer-display">
+      <div class="timer-num" id="timerNum">—</div>
+      <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn ghost" id="revealBtn" style="display:none">👁  Auflösen</button>
+      <button class="btn" id="nextBtn" style="display:none">Weiter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FINAL ============ -->
+<div id="final" class="screen">
+  <div class="final-trophy" id="finalTrophy">🏆</div>
+  <h2 class="final-winner" id="finalWinner">…</h2>
+  <p class="final-sub" id="finalSub">…</p>
+  <div class="final-board" id="finalBoard"></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+    <button class="btn ghost" onclick="location.reload()">🏠 Neue Show</button>
+    <button class="btn" id="rematchBtn">🔁 Rematch (gleiche Teams)</button>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   ZEITZEUGE — Geschichts-Quizshow für die Klasse
+   ========================================================================== */
+
+const COLORS = ['#ff5c7c','#5ec8ff','#3ddc97','#ffd166'];
+const PALETTES = [
+  {name:'Die Roten',  c:COLORS[0]},
+  {name:'Die Blauen', c:COLORS[1]},
+  {name:'Die Grünen', c:COLORS[2]},
+  {name:'Die Gelben', c:COLORS[3]},
+];
+
+/* ==========================================================================
+   FRAGEN
+   ========================================================================== */
+const Q = {
+
+  /* === STUFE 1 — Klasse 5–7 === */
+  1:[
+    {format:'quote',
+      quote:{text:"Ich kam, ich sah, ich siegte.", src:"Brief nach der Schlacht von Zela · 47 v. Chr."},
+      q:"Wer schrieb das?",
+      opts:["Alexander der Große","Julius Cäsar","Napoleon Bonaparte","Karl der Große"], correct:1,
+      explain:"Julius Cäsar — auf Latein „Veni, vidi, vici“. Eine Sieges-Meldung an den römischen Senat.",
+      fact:"Cäsar wurde drei Jahre später, am 15. März 44 v. Chr., im Senat von 23 Dolchstichen ermordet. Sein berühmtes letztes Wort: „Auch du, mein Sohn Brutus?“"},
+
+    {format:'year', min:1450, max:1550, target:1492,
+      q:"Wann erreichte Kolumbus zum ersten Mal eine Karibikinsel?",
+      context:"Drei Schiffe — Niña, Pinta, Santa María. Die spanische Krone zahlt, weil man eine schnelle Westroute nach Indien sucht.",
+      when:"Abfahrt: 3. August · Palos de la Frontera",
+      explain:"12. Oktober 1492 — die Insel hieß bei den Einheimischen Guanahani, Kolumbus taufte sie „San Salvador“.",
+      fact:"Kolumbus glaubte bis zu seinem Tod, in Indien gelandet zu sein. Deshalb der Begriff „Indianer“ — bis heute umstritten."},
+
+    {format:'mc',
+      q:"Welches Tier nahm Hannibal mit über die Alpen, um Rom anzugreifen?",
+      context:"218 v. Chr. — Hannibal aus Karthago will Rom überraschen und überquert die verschneiten Alpen.",
+      opts:["Pferde","Elefanten","Kamele","Stiere"], correct:1,
+      explain:"Kriegselefanten — 37 sollen es gewesen sein. Die meisten überlebten die Kälte nicht.",
+      fact:"Hannibal hielt Rom 17 Jahre lang in Atem. Erst dann konnten die Römer ihn endgültig besiegen."},
+
+    {format:'risk',
+      q:"Welcher Mönch schlug 1517 seine 95 Thesen an die Schlosskirche in Wittenberg — und löste damit die Reformation aus?",
+      opts:["Thomas Müntzer","Martin Luther","Johannes Calvin","Erasmus von Rotterdam"], correct:1,
+      explain:"Martin Luther — er kritisierte den Ablasshandel der Kirche. Europa spaltete sich in protestantisch und katholisch.",
+      fact:"Ohne den frisch erfundenen Buchdruck wäre das nie passiert. Luther war einer der ersten „viralen Autoren“ der Geschichte."},
+
+    {format:'year', min:1900, max:2000, target:1969,
+      q:"In welchem Jahr betrat ein Mensch zum ersten Mal den Mond?",
+      when:"20. Juli · 20:17 UTC",
+      explain:"1969 — Apollo 11. Neil Armstrong und Buzz Aldrin landeten, Michael Collins blieb im Orbit.",
+      fact:"NASA-Mission „Artemis“ plant für 2026/27 die Rückkehr — diesmal mit der ersten Frau auf dem Mond. Über 50 Jahre Pause."},
+
+    {format:'quote',
+      quote:{text:"Ich bin ein Berliner.", src:"Rede vor dem Schöneberger Rathaus · 26. Juni 1963"},
+      q:"Welcher US-Präsident sagte das in West-Berlin?",
+      opts:["John F. Kennedy","Ronald Reagan","Richard Nixon","Lyndon B. Johnson"], correct:0,
+      explain:"John F. Kennedy. Knapp zwei Jahre nach dem Mauerbau — als Solidaritäts-Botschaft.",
+      fact:"Hartnäckiger Mythos: Kennedy habe sich „Berliner“ = Pfannkuchen genannt. Falsch — der Satz ist grammatisch korrekt."},
+
+    {format:'mc',
+      q:"Was war die „Berliner Mauer“?",
+      context:"28 Jahre lang trennte sie eine Stadt und teilte Familien.",
+      opts:["Alte Stadtmauer aus dem Mittelalter","Grenzanlage zwischen Ost- und West-Berlin","Hochhaus-Siedlung","Schutzwall gegen Hochwasser"], correct:1,
+      explain:"Errichtet von der DDR ab dem 13.8.1961, gefallen am 9.11.1989.",
+      fact:"2024 wurde der 35. Jahrestag des Mauerfalls gefeiert. Eure Eltern haben das vermutlich live erlebt — fragt sie mal!"},
+
+    {format:'year', min:1400, max:1700, target:1517,
+      q:"Wann begann mit Luthers 95 Thesen die Reformation?",
+      when:"31. Oktober · Wittenberg",
+      explain:"1517 — der „Thesenanschlag“ am Reformationstag.",
+      fact:"In einigen Bundesländern ist der 31. Oktober gesetzlicher Feiertag — als Reformationstag."},
+
+    {format:'mc',
+      q:"Welches Wahrzeichen Berlins stand direkt an der Mauer — heute Symbol der Wiedervereinigung?",
+      opts:["Fernsehturm","Brandenburger Tor","Reichstag","Berliner Schloss"], correct:1,
+      explain:"Das Brandenburger Tor — am 22.12.1989 für den Verkehr wieder geöffnet. Fast 30 Jahre war es eingemauert.",
+      fact:"Oben auf dem Tor steht die „Quadriga“ — vier Pferde, die die Friedensgöttin ziehen. Napoleon klaute sie 1806, Preußen holte sie 1814 zurück."},
+
+    {format:'quote',
+      quote:{text:"Wir schaffen das.", src:"Sommer 2015 — über eine Million Geflüchtete kommen nach Deutschland"},
+      q:"Wer sagte diesen berühmten Satz?",
+      opts:["Helmut Kohl","Joachim Gauck","Angela Merkel","Frank-Walter Steinmeier"], correct:2,
+      explain:"Angela Merkel — Bundeskanzlerin 2005 bis 2021. Der Satz prägte ihre Flüchtlingspolitik.",
+      fact:"Bis heute politisch umstritten — von den einen gelobt, von den anderen kritisiert. Ein Satz, der eine Epoche prägte."},
+
+    {format:'risk',
+      q:"Welches Bauwerk in Ägypten ist über 4500 Jahre alt und immer noch fast komplett erhalten?",
+      opts:["Tempel von Karnak","Pyramide von Gizeh","Sphinx","Tempel von Luxor"], correct:1,
+      explain:"Die Cheops-Pyramide. Sie war 3800 Jahre lang das höchste Bauwerk der Welt!",
+      fact:"Rund 2,3 Millionen Steinblöcke, jeder zwischen 2 und 50 Tonnen schwer. Wie die alten Ägypter das gebaut haben, wird bis heute erforscht."},
+
+    {format:'year', min:1800, max:1900, target:1871,
+      q:"Wann wurde das Deutsche Reich gegründet (Reichsgründung)?",
+      when:"18. Januar · Spiegelsaal von Versailles",
+      explain:"1871 — nach dem Sieg im Deutsch-Französischen Krieg. Wilhelm I. wurde zum Kaiser ausgerufen.",
+      fact:"Vorher gab es kein „Deutschland“ als Staat, sondern Dutzende Königreiche und Herzogtümer. Bayern, Preußen — wie heute Belgien oder Niederlande."},
+  ],
+
+  /* === STUFE 2 — Klasse 8–10 === */
+  2:[
+    {format:'quote',
+      quote:{text:"Das tritt nach meiner Kenntnis … ist das sofort, unverzüglich.", src:"Pressekonferenz · 9. November 1989 · 18:53 Uhr"},
+      q:"Wer löste mit diesem stotternden Satz versehentlich den Mauerfall aus?",
+      opts:["Erich Honecker","Günter Schabowski","Egon Krenz","Helmut Kohl"], correct:1,
+      explain:"Günter Schabowski — SED-Politbüro-Mitglied. Er hatte den Zettel kurz vorher in die Hand gedrückt bekommen und las falsch ab.",
+      fact:"Eigentlich sollte die Regelung erst am nächsten Tag in Kraft treten. Sein „sofort, unverzüglich“ sandte Tausende Ost-Berliner zur Mauer. Die Grenzer ließen sie durch — ohne Befehl."},
+
+    {format:'year', min:1900, max:1950, target:1914,
+      q:"Wann begann der Erste Weltkrieg?",
+      context:"Ein Attentat in Sarajevo löst eine Kettenreaktion aus. Bündnisverpflichtungen zwingen halb Europa in den Krieg.",
+      when:"28. Juni · Attentat von Sarajevo",
+      explain:"1914 — am 28. Juli erklärte Österreich-Ungarn Serbien den Krieg. In einer Woche waren Russland, Deutschland, Frankreich, Großbritannien beteiligt.",
+      fact:"17 Mio. Tote, 20 Mio. Verwundete. 2024 wurde der 110. Jahrestag des Kriegsbeginns begangen — kein Zeitzeuge lebt mehr."},
+
+    {format:'mc',
+      q:"Welche Großmacht startete am 24. Februar 2022 eine Invasion ihres Nachbarlandes — und prägt seither die europäische Politik?",
+      context:"Größter Krieg in Europa seit 1945. Folge: NATO-Erweiterung, dt. „Zeitenwende“, Energiekrise.",
+      opts:["China gegen Taiwan","Russland gegen die Ukraine","Türkei gegen Syrien","Iran gegen Israel"], correct:1,
+      explain:"Russland gegen die Ukraine. Wladimir Putin nannte es zynisch „militärische Spezialoperation“.",
+      fact:"Deutschland beschloss 2022 ein 100-Mrd.-Sondervermögen für die Bundeswehr. Eine Summe, die 2021 noch undenkbar war."},
+
+    {format:'quote',
+      quote:{text:"Freiheit und Leben kann man uns nehmen, die Ehre nicht.", src:"Reichstagsrede gegen das Ermächtigungsgesetz · 23. März 1933"},
+      q:"Wer hielt die einzige offene Rede GEGEN Hitlers Machtübernahme — wissend, dass es lebensgefährlich war?",
+      opts:["Konrad Adenauer","Friedrich Ebert","Otto Wels (SPD)","Theodor Heuss"], correct:2,
+      explain:"Otto Wels — SPD-Vorsitzender. 94 SPD-Abgeordnete stimmten gegen das Gesetz. Alle anderen Parteien stimmten ZU.",
+      fact:"Wels musste ins Exil fliehen, starb 1939 in Paris. Seine Rede gilt heute als eine der mutigsten der deutschen Geschichte."},
+
+    {format:'year', min:1980, max:2000, target:1989,
+      q:"In welchem Jahr fiel die Berliner Mauer?",
+      when:"9. November · Berlin",
+      explain:"1989 — am 9. November. Ein „Schicksalstag der Deutschen“: auch Hitler-Putsch 1923, Pogromnacht 1938. Deshalb ist Nationalfeiertag der 3. Oktober (Wiedervereinigung 1990).",
+      fact:"Es war ein Kommunikationsfehler: Schabowski las eine Notiz falsch ab. Geschichte durch Stottern."},
+
+    {format:'risk',
+      q:"Welche Atom-Katastrophe traf 1986 die Sowjetunion und kontaminierte halb Europa?",
+      context:"Reaktor-4 explodiert bei einem Test. Sowjetregierung verheimlicht — Schweden misst Radioaktivität als erstes.",
+      opts:["Fukushima","Tschernobyl","Three Mile Island","Mayak"], correct:1,
+      explain:"Tschernobyl, heute Ukraine. 31 Tote sofort, geschätzt 4.000–60.000 langfristige Krebs-Tote.",
+      fact:"Seit 2022 wieder in den Schlagzeilen: Russische Truppen besetzten das stillgelegte AKW während der Invasion. Eine zweite Katastrophe wurde knapp verhindert."},
+
+    {format:'quote',
+      quote:{text:"How dare you. You have stolen my dreams and my childhood with your empty words.", src:"UN-Klimagipfel New York · 23. September 2019"},
+      q:"Welche Person richtete diese Worte an die UN-Vollversammlung?",
+      opts:["Malala Yousafzai","Greta Thunberg","Emma González","Luisa Neubauer"], correct:1,
+      explain:"Greta Thunberg — damals 16. Sie war mit einem Segelboot über den Atlantik gereist, um nicht zu fliegen.",
+      fact:"Pariser Klimaabkommen 2015: 195 Staaten beschließen 1,5°C-Ziel. COP30 Belém 2025 zeigt: nicht auf Kurs. 2024 war global das heißeste Jahr."},
+
+    {format:'mc',
+      q:"Welche Aussage über Hitlers Machtübernahme 1933 ist KORREKT?",
+      opts:[
+        "Die NSDAP hat in einer freien Wahl die absolute Mehrheit erhalten",
+        "Hitler putschte sich mit Gewalt an die Macht",
+        "Reichspräsident Hindenburg ernannte Hitler — NSDAP war stärkste Partei, hatte aber keine Mehrheit",
+        "Eine Volksabstimmung brachte Hitler an die Macht"
+      ], correct:2,
+      explain:"Hindenburg ernannte Hitler am 30.1.1933 zum Reichskanzler. NSDAP hatte zuletzt 33%, später unter Druck 43,9%. Nie eine demokratische Mehrheit.",
+      fact:"Wichtige Lektion: Demokratien sterben nicht immer durch Putsch — auch durch graduelle Aushöhlung von innen. Aktuell: Ungarn, Türkei."},
+
+    {format:'year', min:1900, max:1950, target:1923,
+      q:"Wann erreichte die Hyperinflation in der Weimarer Republik ihren Höhepunkt — 1 Brot kostete 200 Milliarden Mark?",
+      when:"November · Berlin",
+      explain:"1923. Im November kostete 1 US-Dollar 4,2 Billionen Mark. Menschen heizten mit Geldscheinen — billiger als Holz.",
+      fact:"Die Inflation traf besonders die Mittelschicht — Sparbücher wurden wertlos. Wütende Bürger wandten sich Extremisten zu: NSDAP-Mitgliederzahlen explodierten 1923."},
+
+    {format:'mc',
+      q:"Was war der „Marshallplan“ (ab 1948)?",
+      context:"Europa lag in Trümmern. Die USA hatten Interesse daran, dass es wieder aufstand.",
+      opts:[
+        "US-Wirtschaftshilfe für den Wiederaufbau Westeuropas",
+        "Militärbündnis gegen die UdSSR",
+        "Ein DDR-Wirtschaftsplan",
+        "Ein UN-Klimaplan"
+      ], correct:0,
+      explain:"13 Mrd. USD (heute ~175 Mrd. €) für 16 westeuropäische Staaten — damit sie sich nicht dem Kommunismus zuwenden.",
+      fact:"2022/23 wurde der Begriff wieder aktuell: In der EU diskutiert man einen „Marshallplan für die Ukraine“ — geschätzt 350–500 Mrd. € für den Wiederaufbau."},
+
+    {format:'risk',
+      q:"Was bedeutet das Wort „Holocaust“ / „Shoah“?",
+      opts:[
+        "Eine antike Tragödie",
+        "Systematischer Massenmord an Jüd:innen und anderen im Nationalsozialismus",
+        "Eine Krankheit",
+        "Ein religiöses Fest"
+      ], correct:1,
+      explain:"Der NS-Völkermord — etwa 6 Mio. ermordete Juden, dazu Sinti, Roma, Behinderte, Homosexuelle, politisch Andersdenkende.",
+      fact:"Die letzten Überlebenden sind heute 90+. Der jüngste Auschwitz-Überlebende, der noch öffentlich spricht, ist Mitte 80. Die Generation der Zeitzeugen verschwindet."},
+
+    {format:'quote',
+      quote:{text:"Ich brauche keine Mitfahrgelegenheit, ich brauche Munition.", src:"Antwort auf US-Ausreiseangebot · 26. Februar 2022 · Kiew"},
+      q:"Welcher Präsident lehnte mit diesem Satz die Flucht aus seiner umkämpften Hauptstadt ab?",
+      opts:["Aleksandar Vučić","Wolodymyr Selenskyj","Recep Tayyip Erdoğan","Aleksandr Lukaschenko"], correct:1,
+      explain:"Wolodymyr Selenskyj — Schauspieler, Komiker, seit 2019 Präsident der Ukraine. Sein Bleiben in Kiew gilt als Mobilisierungs-Moment.",
+      fact:"2022 wurde Selenskyj „Time Person of the Year“. Westliche Geheimdienste hatten Kiew nur 72 Stunden gegeben."},
+  ],
+
+  /* === STUFE 3 — Klasse 11–13 === */
+  3:[
+    {format:'quote',
+      quote:{text:"From Stettin in the Baltic to Trieste in the Adriatic, an iron curtain has descended across the Continent.", src:"Westminster College, Fulton, Missouri · 5. März 1946"},
+      q:"Welcher Politiker prägte mit dieser Rede den Begriff des „Eisernen Vorhangs“?",
+      opts:["Franklin D. Roosevelt","Winston Churchill","Charles de Gaulle","Harry S. Truman"], correct:1,
+      explain:"Winston Churchill — zu dem Zeitpunkt nicht mehr britischer Premier, aber auf Einladung von US-Präsident Truman.",
+      fact:"Die Rede markiert den rhetorischen Beginn des Kalten Krieges — keine 10 Monate nach Kriegsende. Aus Alliierten wurden Feinde."},
+
+    {format:'year', min:1500, max:1700, target:1648,
+      q:"Wann endete der Dreißigjährige Krieg mit dem Westfälischen Frieden?",
+      context:"Münster und Osnabrück — die ersten europäischen Friedensverhandlungen ohne den Papst.",
+      when:"24. Oktober · Münster &amp; Osnabrück",
+      explain:"1648. Der Westfälische Friede gilt als Geburtsstunde des modernen Völkerrechts und der staatlichen Souveränität.",
+      fact:"Mancherorts in Deutschland überlebten weniger als 50% der Bevölkerung. Mecklenburg brauchte 100 Jahre für die Vorkriegs-Einwohnerzahl. Krieg, Hunger, Pest."},
+
+    {format:'mc',
+      q:"Welche These des Politologen Francis Fukuyama (1992) gilt heute als überholt — auch von ihm selbst?",
+      context:"Nach dem Zerfall der Sowjetunion herrschte kurz die Idee, der Westen habe endgültig gewonnen.",
+      opts:[
+        "Das Ende der Geschichte: liberale Demokratie als endgültige Regierungsform",
+        "Der Kampf der Kulturen",
+        "Die Soft-Power-Doktrin",
+        "Das Ende der Nationalstaaten"
+      ], correct:0,
+      explain:"„The End of History?“ (1989/1992). Fukuyama postulierte den endgültigen Sieg der liberalen Demokratie.",
+      fact:"Heute: Ukraine-Krieg, Trump-Ära, China-Aufstieg, Demokratie-Erosion. Fukuyama hat die These mehrfach revidiert. Huntingtons „Kampf der Kulturen“ wirkt heute treffender."},
+
+    {format:'risk',
+      q:"Was war das Kernanliegen der „Frankfurter Schule“ (Adorno, Horkheimer, Marcuse)?",
+      opts:[
+        "Verteidigung der freien Marktwirtschaft",
+        "Aufklärung kann in Barbarei umschlagen — kritische Theorie der Gesellschaft",
+        "Wiederherstellung der Monarchie",
+        "Erforschung der antiken Philosophie"
+      ], correct:1,
+      explain:"„Dialektik der Aufklärung“ (1944): Versuch zu erklären, wie aus der Aufklärung der Holocaust werden konnte.",
+      fact:"Adornos Diagnose der „Kulturindustrie“ wird heute auf TikTok, KI-Algorithmen, Social Media angewandt — die Themen sind frappierend aktuell."},
+
+    {format:'quote',
+      quote:{text:"Die Mauer wird in 50 und auch in 100 Jahren noch bestehen, wenn die dazu vorhandenen Gründe nicht beseitigt sind.", src:"Pressekonferenz · 19. Januar 1989"},
+      q:"Wer sprach diese Worte — keine 10 Monate vor dem Mauerfall?",
+      opts:["Helmut Kohl","Hans-Dietrich Genscher","Erich Honecker","Egon Krenz"], correct:2,
+      explain:"Erich Honecker — Staatsratsvorsitzender der DDR. Eine der berühmtesten politischen Fehleinschätzungen der Geschichte.",
+      fact:"Auch CIA und BND prognostizierten 1988 noch eine stabile DDR. Politische Großmacht-Vorhersagen sind notorisch unzuverlässig — Demut ist angebracht."},
+
+    {format:'year', min:1900, max:1950, target:1929,
+      q:"Wann brach an der Wall Street der „Schwarze Freitag“ / „Black Tuesday“ aus?",
+      when:"24./29. Oktober · NYC",
+      explain:"1929 — in den USA „Black Tuesday“ (29.10.), in Europa wegen Zeitverschiebung „Schwarzer Freitag“ (25.10.).",
+      fact:"Die Krise stürzte die Weimarer Republik endgültig ins Chaos. NSDAP-Wähleranteil sprang von 2,6% (1928) auf 18,3% (1930), 37,3% (1932)."},
+
+    {format:'mc',
+      q:"Welcher Begriff beschreibt die These, dass Deutschland einen „Sonderweg“ zur Diktatur ging?",
+      context:"Eine der wichtigsten geschichtswissenschaftlichen Debatten des 20. Jahrhunderts.",
+      opts:[
+        "Stunde-Null-These",
+        "Sonderwegs-These (Wehler, Kocka)",
+        "Goldhagen-These",
+        "Fischer-Kontroverse"
+      ], correct:1,
+      explain:"Wehler / Kocka argumentierten: deutsche Eliten blockierten Demokratisierung im 19. Jh. Kritik (Blackbourn/Eley): kein Sonderweg, sondern westliche Variante.",
+      fact:"Die postkoloniale Wende stellt die Sonderwegs-These erneut in Frage — wer Kolonialgeschichte einbezieht, sieht westliche „Normalität“ ganz anders."},
+
+    {format:'quote',
+      quote:{text:"Wir sind das Volk!", src:"Montagsdemonstrationen Leipzig · ab Herbst 1989"},
+      q:"Was forderten die DDR-Demonstranten mit diesem Sprechchor ursprünglich?",
+      opts:[
+        "Sofortige Wiedervereinigung mit der BRD",
+        "Demokratische Reformen IN der DDR",
+        "Rückkehr zum Sozialismus alten Stils",
+        "Anschluss an die UdSSR"
+      ], correct:1,
+      explain:"Anfangs: Reform der DDR, Reisefreiheit, freie Wahlen. Erst Ende 1989 schwenkte der Slogan zu „Wir sind EIN Volk“ — Ruf nach Wiedervereinigung.",
+      fact:"Bittere Ironie: „Wir sind das Volk“ wird seit 2014 von Pegida und AfD vereinnahmt. Originalprotagonisten der Friedlichen Revolution wehren sich gegen die Aneignung."},
+
+    {format:'risk',
+      q:"Welche These der Postcolonial Studies (Said, Mbembe, Spivak) prägt heute die geschichtswissenschaftliche Debatte?",
+      opts:[
+        "Kolonialismus ist ein abgeschlossenes Kapitel",
+        "Westliches Wissen war neutral",
+        "Kolonialgeschichte prägt globale Ungleichheit, Wissen, Migration bis heute",
+        "Nur Großbritannien war Kolonialmacht"
+      ], correct:2,
+      explain:"Edward Said („Orientalismus“ 1978), Spivak, Mbembe: Koloniale Macht wirkt in Sprache, Wissenschaft, Wirtschaft fort.",
+      fact:"2022 gab Deutschland erstmals 22 Benin-Bronzen an Nigeria zurück. Geschätzt 90% afrikanischer Kulturgüter befinden sich noch in europäischen Museen."},
+
+    {format:'year', min:1900, max:1970, target:1933,
+      q:"Wann erlangte die NSDAP über das Ermächtigungsgesetz die Diktatur-Vollmacht?",
+      when:"24. März · Berlin · Reichstag",
+      explain:"1933. Mit 444 Ja zu 94 Nein (nur SPD) wurde die Verfassung praktisch außer Kraft gesetzt. KPD-Abgeordnete waren bereits verhaftet oder geflohen.",
+      fact:"Das Ermächtigungsgesetz ist DAS Lehrbuch-Beispiel für „Demokratien sterben durch demokratische Mittel“. Heute warnen Politikwissenschaftler vor ähnlichen Mustern."},
+
+    {format:'mc',
+      q:"Welches Phänomen beschreibt der Begriff „Anthropozän“ (Crutzen, ~2000)?",
+      context:"Eine vorgeschlagene neue erdgeschichtliche Epoche.",
+      opts:[
+        "Eine antike Hochkultur",
+        "Die These einer durch den Menschen geprägten erdgeschichtlichen Epoche",
+        "Ein neuer Kontinent",
+        "Eine Migrationsbewegung"
+      ], correct:1,
+      explain:"Anthropos (griech.) = Mensch. Crutzen: Der Mensch ist zur geologischen Kraft geworden — CO₂, Plastik, Atomtests.",
+      fact:"2024 entschied die Internationale Stratigraphie-Kommission: das Anthropozän wird NICHT offiziell als geologische Epoche anerkannt. Halb wissenschaftliche, halb politische Debatte."},
+
+    {format:'quote',
+      quote:{text:"Aufgabe der Politik ist es nicht, Werte zu setzen, sondern die Bedingungen zu schaffen, unter denen Menschen ihre Werte verwirklichen können.", src:"Vermutet · Wendezeit 1989/90"},
+      q:"Welcher liberale Außenminister prägte die dt. Wiedervereinigung diplomatisch?",
+      opts:["Walter Scheel","Hans-Dietrich Genscher","Otto Graf Lambsdorff","Wolfgang Schäuble"], correct:1,
+      explain:"Hans-Dietrich Genscher (FDP) — Außenminister 1974–1992. Sein Auftritt auf dem Balkon der Prager Botschaft 1989 ist legendär.",
+      fact:"Der unvollendete Satz vom 30.9.1989: „Ich bin zu Ihnen gekommen, um Ihnen mitzuteilen, dass heute Ihre Ausreise…“ — der Rest ging im Jubel unter. Vielleicht der wichtigste Halbsatz der Nachkriegsgeschichte."},
+  ]
+};
+
+/* ==========================================================================
+   STATE
+   ========================================================================== */
+let state = {
+  stufe:2, teams:[], questions:[],
+  round:0, currentQ:null,
+  phase:'idle',
+  buzzed:null, answered:[],
+  timer:null, timeLeft:0,
+  yearGuesses:{},
+  riskTeam:null, riskAmount:0
+};
+
+/* ==========================================================================
+   LOBBY
+   ========================================================================== */
+function initLobby(){
+  document.querySelectorAll('.stufe-pick').forEach(b=>{
+    b.onclick = ()=>{
+      document.querySelectorAll('.stufe-pick').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      state.stufe = parseInt(b.dataset.stufe,10);
+    };
+  });
+  state.teams = [{...PALETTES[0]},{...PALETTES[1]}];
+  renderTeams();
+  document.getElementById('addTeamBtn').onclick = ()=>{
+    if(state.teams.length>=4) return;
+    state.teams.push({...PALETTES[state.teams.length]});
+    renderTeams();
+  };
+  document.getElementById('startBtn').onclick = startShow;
+}
+
+function renderTeams(){
+  const list = document.getElementById('teamList');
+  list.innerHTML = '';
+  state.teams.forEach((t,i)=>{
+    const row = document.createElement('div');
+    row.className = 'team-row';
+    row.innerHTML = `
+      <div class="swatch" style="background:${t.c}" data-i="${i}" title="Farbe ändern"></div>
+      <input type="text" value="${escapeAttr(t.name)}" data-i="${i}" maxlength="22"/>
+      <button class="x" data-i="${i}" title="Team entfernen">✕</button>
+    `;
+    row.querySelector('input').oninput = e=>state.teams[i].name = e.target.value;
+    row.querySelector('.x').onclick = ()=>{
+      if(state.teams.length <= 2){ alert('Mindestens 2 Teams nötig.'); return; }
+      state.teams.splice(i,1);
+      renderTeams();
+    };
+    row.querySelector('.swatch').onclick = ()=>{
+      const used = state.teams.map((_t,_i)=>_i!==i?_t.c:null).filter(Boolean);
+      const free = COLORS.find(c=>!used.includes(c) && c!==t.c) || COLORS[(COLORS.indexOf(t.c)+1)%COLORS.length];
+      state.teams[i].c = free;
+      renderTeams();
+    };
+    list.appendChild(row);
+  });
+  document.getElementById('addTeamBtn').style.display = state.teams.length>=4 ? 'none':'block';
+}
+
+/* ==========================================================================
+   SHOW
+   ========================================================================== */
+function startShow(){
+  // ensure names not empty
+  state.teams.forEach((t,i)=>{ if(!t.name.trim()) t.name = PALETTES[i].name; });
+  state.questions = shuffle(Q[state.stufe].slice()).slice(0,12);
+  state.teams.forEach(t=>t.score=0);
+  state.round = 0;
+  document.getElementById('roundTotal').textContent = state.questions.length;
+  document.getElementById('stufeLabel').textContent = 'Stufe '+['I','II','III'][state.stufe-1];
+  document.getElementById('lobby').classList.remove('active');
+  document.getElementById('show').classList.add('active');
+  renderScoreboard();
+  nextRound();
+}
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function renderScoreboard(){
+  const sb = document.getElementById('scoreboard');
+  sb.innerHTML = '';
+  state.teams.forEach((t,i)=>{
+    const card = document.createElement('div');
+    card.className = 'score-card';
+    card.style.setProperty('--c', t.c);
+    card.dataset.team = i;
+    card.innerHTML = `
+      <div>
+        <div class="tname">${escapeHtml(t.name)} <span class="num">[${i+1}]</span></div>
+      </div>
+      <div class="pts" id="pts-${i}">${t.score}</div>
+      <div class="delta" id="delta-${i}"></div>
+    `;
+    card.onclick = ()=>onTeamClick(i);
+    sb.appendChild(card);
+  });
+}
+
+function updateScoreboard(){
+  state.teams.forEach((t,i)=>{
+    const el = document.getElementById('pts-'+i);
+    if(el) el.textContent = t.score;
+  });
+}
+
+function flashDelta(idx, amount){
+  const d = document.getElementById('delta-'+idx);
+  if(!d) return;
+  d.textContent = (amount>=0?'+':'')+amount;
+  d.classList.toggle('minus', amount<0);
+  d.classList.remove('show'); void d.offsetWidth; d.classList.add('show');
+  const card = document.querySelector(`.score-card[data-team="${idx}"]`);
+  if(card){ card.classList.remove('buzz'); void card.offsetWidth; card.classList.add('buzz'); }
+}
+
+function highlightActive(idx){
+  document.querySelectorAll('.score-card').forEach((c,i)=>c.classList.toggle('active', i===idx));
+}
+
+/* ==========================================================================
+   ROUND
+   ========================================================================== */
+function nextRound(){
+  state.round++;
+  if(state.round > state.questions.length){ endShow(); return; }
+  state.currentQ = state.questions[state.round-1];
+  state.buzzed = null;
+  state.answered = [];
+  state.yearGuesses = {};
+  state.riskTeam = null;
+  state.riskAmount = 0;
+  state.phase = 'reading';
+  document.getElementById('roundNum').textContent = state.round;
+  highlightActive(-1);
+  hideTimer();
+  hideFootBtns();
+  renderStage();
+}
+
+function renderStage(){
+  const q = state.currentQ;
+  const stage = document.getElementById('stage');
+  let html = '';
+
+  const typeLabel = {
+    mc:'Buzzer-Frage',
+    year:'Schätzfrage · alle Teams',
+    quote:'Quellen-Quiz · Buzzer',
+    risk:'⚠ Wagnis-Runde',
+  }[q.format];
+
+  // Risk: phase 1 — pick team
+  if(q.format === 'risk' && state.phase === 'reading' && state.riskTeam === null){
+    state.phase = 'risk-pick';
+    html = `
+      <div class="q-type-badge">⚠️  Wagnis-Runde</div>
+      <h2 class="q-text">Welches Team wagt diese Frage?</h2>
+      <p style="font-size:17px;color:var(--muted);line-height:1.55;max-width:760px;margin-bottom:24px">
+        Ein Team meldet sich freiwillig, setzt einen Punktebetrag und löst die Frage allein.
+        <b style="color:var(--good)">Richtig = +(2× Einsatz).</b> <b style="color:var(--bad)">Falsch = −Einsatz.</b>
+      </p>
+      <div class="risk-pick-grid">
+        ${state.teams.map((t,i)=>`
+          <button class="risk-pick" style="--c:${t.c};color:${t.c}" onclick="pickRiskTeam(${i})">
+            <span class="num">${i+1}</span>
+            <span>${escapeHtml(t.name)}</span>
+            <span style="color:var(--muted);font-size:13px;margin-left:6px;font-weight:500">${t.score} P.</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+    stage.innerHTML = html;
+    return;
+  }
+  // Risk: phase 2 — pick bet
+  if(q.format === 'risk' && state.phase === 'risk-bet'){
+    const team = state.teams[state.riskTeam];
+    html = `
+      <div class="q-type-badge" style="color:${team.c}">⚠️  ${escapeHtml(team.name)} · Einsatz wählen</div>
+      <h2 class="q-text">Wie viele Punkte setzt ihr?</h2>
+      <p style="font-size:16px;color:var(--muted);max-width:680px;margin-bottom:22px;line-height:1.55">
+        Aktueller Score: <b style="color:${team.c}">${team.score}</b>. Bei Richtig: +(2× Einsatz). Bei Falsch: −Einsatz.
+      </p>
+      <div class="bet-grid">
+        ${[100,250,500,1000].map(v=>`<button class="bet-btn" onclick="setRiskAmount(${v})">${v}</button>`).join('')}
+      </div>
+    `;
+    stage.innerHTML = html;
+    return;
+  }
+  // Risk: phase 3 — show question to risk team
+  if(q.format === 'risk' && state.phase === 'risk-answering'){
+    const team = state.teams[state.riskTeam];
+    html = `
+      <div class="q-type-badge" style="color:${team.c}">⚠️  ${escapeHtml(team.name)} riskiert ${state.riskAmount} P.</div>
+      <h2 class="q-text">${q.q}</h2>
+      ${q.context ? `<div class="q-context">${q.when?`<span class="when">${q.when}</span>`:''}${q.context}</div>` : ''}
+      <div class="options">${q.opts.map((o,i)=>`
+        <button class="opt" onclick="onRiskAnswer(${i})">
+          <span class="letter">${'ABCD'[i]}</span><span>${escapeHtml(o)}</span>
+        </button>
+      `).join('')}</div>
+    `;
+    stage.innerHTML = html;
+    showFootBtns({});
+    startTimer(20);
+    return;
+  }
+
+  // Default rendering
+  html += `<div class="q-type-badge">${typeLabel}</div>`;
+
+  if(q.format === 'quote'){
+    html += `<div class="quote-card">
+      <div class="src-label">Original-Quelle</div>
+      <p class="quote"><span class="q-mark">"</span>${escapeHtml(q.quote.text)}</p>
+      <p class="src">— ${escapeHtml(q.quote.src)}</p>
+    </div>`;
+  }
+  if(q.context){
+    html += `<div class="q-context">${q.when?`<span class="when">${q.when}</span>`:''}${q.context}</div>`;
+  } else if(q.when && q.format !== 'year'){
+    html += `<div class="q-context"><span class="when">${q.when}</span></div>`;
+  }
+
+  html += `<h2 class="q-text">${q.q}</h2>`;
+
+  if(q.format === 'mc' || q.format === 'quote'){
+    html += `<div class="options" id="opts">${q.opts.map((o,i)=>`
+      <button class="opt locked" data-i="${i}" disabled>
+        <span class="letter">${'ABCD'[i]}</span><span>${escapeHtml(o)}</span>
+      </button>
+    `).join('')}</div>
+    <div class="buzzer-prompt" id="bp">
+      Wer weiß es? <b style="margin:0 4px;color:var(--accent)">Buzzer drücken</b> — Taste <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> oder Team-Karte oben anklicken
+    </div>`;
+    state.phase = 'buzzing';
+    showFootBtns({reveal:true});
+  } else if(q.format === 'year'){
+    html += `<div class="year-stage">
+      <p style="color:var(--muted);font-size:14px;max-width:600px;text-align:center;margin-bottom:8px">
+        Jedes Team tippt sein Jahr ein. Auflösen, wenn alle fertig sind.
+      </p>
+      <div class="year-input-row">
+        ${state.teams.map((t,i)=>`
+          <div class="team-year-card" style="--c:${t.c}">
+            <div class="tn">${escapeHtml(t.name)}</div>
+            <input class="year-input" type="number" data-team="${i}" placeholder="????" min="${q.min}" max="${q.max}"/>
+          </div>
+        `).join('')}
+      </div>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Zeitraum: ${q.min}–${q.max}</p>
+    </div>`;
+    state.phase = 'guessing';
+    setTimeout(()=>document.querySelector('.year-input')?.focus(), 80);
+    showFootBtns({reveal:true});
+  }
+
+  stage.innerHTML = html;
+}
+
+/* ---- Team click / buzz ---- */
+function onTeamClick(idx){
+  if(state.phase === 'buzzing') doBuzz(idx);
+}
+function doBuzz(idx){
+  if(state.answered.includes(idx)) return;
+  state.buzzed = idx;
+  state.answered.push(idx);
+  state.phase = 'answering';
+  highlightActive(idx);
+  document.querySelectorAll('#opts .opt').forEach(o=>{
+    o.classList.remove('locked');
+    o.disabled = false;
+    o.onclick = ()=>onAnswerClick(parseInt(o.dataset.i,10));
+  });
+  startTimer(15);
+  const t = state.teams[idx];
+  const bp = document.getElementById('bp');
+  if(bp){
+    bp.innerHTML = `Team <b style="color:${t.c};margin:0 4px">${escapeHtml(t.name)}</b> antwortet — 15 Sekunden`;
+  }
+}
+
+function onAnswerClick(i){
+  const q = state.currentQ;
+  if(state.phase !== 'answering' || state.buzzed === null) return;
+  resolveAnswer(state.buzzed, i, q);
+}
+
+function resolveAnswer(teamIdx, answerIdx, q){
+  stopTimer();
+  const correct = answerIdx === q.correct;
+  const opts = document.querySelectorAll('#opts .opt');
+  opts.forEach(o=>{ o.onclick = null; o.disabled = true; });
+
+  if(correct){
+    opts[answerIdx]?.classList.add('right');
+    const pts = pointsForFormat(q.format);
+    state.teams[teamIdx].score += pts;
+    flashDelta(teamIdx, pts);
+    updateScoreboard();
+    confetti(20);
+    showReveal('right', q);
+  } else {
+    opts[answerIdx]?.classList.add('wrong');
+    // Steal: enable other teams to buzz (no penalty for first team)
+    const stealableTeams = state.teams.length - state.answered.length;
+    if(stealableTeams > 0){
+      state.phase = 'buzzing';
+      highlightActive(-1);
+      const bp = document.getElementById('bp');
+      if(bp){
+        bp.classList.add('bad');
+        bp.innerHTML = `Falsch! <b style="color:var(--bad);margin:0 4px">Andere Teams können klauen</b> — Buzzer drücken für halbe Punkte (${Math.round(pointsForFormat(q.format)/2)} P.)`;
+      }
+      // Re-enable un-tried options for next buzzer
+      document.querySelectorAll('#opts .opt').forEach((o,i)=>{
+        if(i !== answerIdx && !o.classList.contains('right') && !o.classList.contains('wrong')){
+          o.classList.add('locked');
+          o.disabled = true;
+        }
+      });
+      startTimer(15);
+    } else {
+      // Nobody left — reveal
+      opts[q.correct]?.classList.add('right');
+      showReveal('wrong', q);
+    }
+  }
+}
+
+function pointsForFormat(fmt){
+  const base = state.stufe * 100; // 100/200/300
+  if(fmt === 'quote') return base + 50;
+  return base;
+}
+
+/* ---- Risk ---- */
+function pickRiskTeam(idx){
+  state.riskTeam = idx;
+  state.phase = 'risk-bet';
+  renderStage();
+}
+function setRiskAmount(v){
+  state.riskAmount = v;
+  state.phase = 'risk-answering';
+  renderStage();
+}
+function onRiskAnswer(i){
+  stopTimer();
+  const q = state.currentQ;
+  const correct = i === q.correct;
+  const t = state.riskTeam;
+  const amt = state.riskAmount;
+  const opts = document.querySelectorAll('.options .opt');
+  opts.forEach(o=>{o.onclick=null;o.disabled=true});
+  opts[i]?.classList.add(correct?'right':'wrong');
+  if(!correct) opts[q.correct]?.classList.add('right');
+  if(correct){
+    state.teams[t].score += amt*2;
+    flashDelta(t, amt*2);
+    confetti(30);
+  } else {
+    state.teams[t].score -= amt;
+    flashDelta(t, -amt);
+  }
+  updateScoreboard();
+  showReveal(correct?'right':'wrong', q);
+}
+
+/* ---- Year reveal ---- */
+function revealYear(){
+  const q = state.currentQ;
+  document.querySelectorAll('.year-input').forEach(inp=>{
+    const v = parseInt(inp.value,10);
+    if(!isNaN(v)) state.yearGuesses[inp.dataset.team] = v;
+    inp.disabled = true;
+  });
+  const results = state.teams.map((t,i)=>{
+    const g = state.yearGuesses[i];
+    if(g === undefined) return {i, g:null, diff:Infinity, pts:0, t};
+    return {i, g, diff:Math.abs(g-q.target), t};
+  });
+  const validResults = results.filter(r=>r.diff !== Infinity);
+  const minDiff = validResults.length ? Math.min(...validResults.map(r=>r.diff)) : Infinity;
+  const maxPts = state.stufe * 200;
+  results.forEach(r=>{
+    if(r.diff === Infinity){ r.pts = 0; return; }
+    if(r.diff === 0) r.pts = maxPts + 100; // bonus
+    else if(r.diff === minDiff) r.pts = maxPts;
+    else r.pts = Math.max(0, Math.round(maxPts * ((minDiff+1) / (r.diff+1)) * 0.7));
+  });
+  results.forEach(r=>{
+    if(r.pts > 0){
+      state.teams[r.i].score += r.pts;
+      flashDelta(r.i, r.pts);
+    }
+  });
+  updateScoreboard();
+  state.phase = 'reveal';
+  const stage = document.getElementById('stage');
+  stage.innerHTML = `
+    <div class="q-type-badge">Auflösung</div>
+    <h2 class="q-text">${q.q}</h2>
+    <div class="year-stage">
+      <div class="reveal-target">${q.target}</div>
+      <div class="reveal-info">${q.explain}</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px;width:100%;max-width:680px">
+        ${results.sort((a,b)=>a.diff-b.diff).map(r=>{
+          const off = r.g===null
+            ? '— keine Eingabe'
+            : `tippte <b>${r.g}</b> · ${r.diff===0?'<b style="color:var(--good)">VOLLTREFFER!</b>':r.diff+' Jahr'+(r.diff===1?'':'e')+' daneben'}`;
+          return `<div class="yr-row" style="--c:${r.t.c}">
+            <span><b>${escapeHtml(r.t.name)}</b> <span style="color:var(--muted);font-size:13px;margin-left:8px">${off}</span></span>
+            <span class="yr-pts ${r.pts>0?'good':'zero'}">${r.pts>0?'+':''}${r.pts}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    ${q.fact ? `<div class="reveal-card"><div class="reveal-fact"><b>💡 Wusstest du?</b>${q.fact}</div></div>` : ''}
+  `;
+  if(validResults.some(r=>r.diff === 0)) confetti(40);
+  showFootBtns({next:true});
+}
+
+/* ---- Reveal (mc/quote/risk) ---- */
+function showReveal(kind, q){
+  state.phase = 'reveal';
+  stopTimer();
+  highlightActive(-1);
+  // Mark correct
+  document.querySelectorAll('.options .opt').forEach((o,i)=>{
+    o.disabled = true; o.onclick = null;
+    if(i === q.correct) o.classList.add('right');
+  });
+  const stage = document.getElementById('stage');
+  // Remove buzzer prompt
+  const bp = stage.querySelector('.buzzer-prompt');
+  if(bp) bp.remove();
+  const reveal = document.createElement('div');
+  reveal.className = 'reveal-card';
+  reveal.innerHTML = `
+    <div class="reveal-head">
+      <span class="reveal-tag ${kind}">${kind==='right'?'✓ Richtig':'✗ Falsch'}</span>
+      ${q.when ? `<span class="mono" style="font-size:12px;color:var(--muted)">${q.when}</span>` : ''}
+    </div>
+    <p class="reveal-explain">${q.explain}</p>
+    ${q.fact ? `<div class="reveal-fact"><b>💡 Wusstest du?</b>${q.fact}</div>` : ''}
+  `;
+  stage.appendChild(reveal);
+  showFootBtns({next:true});
+}
+
+/* ---- Timer ---- */
+function startTimer(seconds){
+  state.timeLeft = seconds;
+  document.getElementById('timerNum').textContent = seconds;
+  document.getElementById('timerNum').classList.remove('warn');
+  const fill = document.getElementById('timerFill');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  setTimeout(()=>{
+    fill.style.transition = `width ${seconds}s linear`;
+    fill.style.width = '0%';
+  }, 30);
+  stopTimer();
+  state.timer = setInterval(()=>{
+    state.timeLeft--;
+    document.getElementById('timerNum').textContent = state.timeLeft;
+    if(state.timeLeft <= 5) document.getElementById('timerNum').classList.add('warn');
+    if(state.timeLeft <= 0){
+      stopTimer();
+      onTimeout();
+    }
+  }, 1000);
+}
+function stopTimer(){ if(state.timer){ clearInterval(state.timer); state.timer = null; } }
+function hideTimer(){
+  document.getElementById('timerNum').textContent = '—';
+  document.getElementById('timerNum').classList.remove('warn');
+  const fill = document.getElementById('timerFill');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+}
+function onTimeout(){
+  const q = state.currentQ;
+  if(state.phase === 'answering' || state.phase === 'buzzing'){
+    document.querySelectorAll('#opts .opt').forEach((o,i)=>{
+      o.disabled = true; o.onclick = null;
+      if(i === q.correct) o.classList.add('right');
+    });
+    showReveal('wrong', q);
+  } else if(state.phase === 'risk-answering'){
+    onRiskAnswer(-1);
+  }
+}
+
+/* ---- Footer buttons ---- */
+function hideFootBtns(){
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('revealBtn').style.display = 'none';
+}
+function showFootBtns({next, reveal}={}){
+  document.getElementById('nextBtn').style.display = next?'inline-block':'none';
+  document.getElementById('revealBtn').style.display = reveal?'inline-block':'none';
+}
+document.getElementById('nextBtn').onclick = nextRound;
+document.getElementById('revealBtn').onclick = ()=>{
+  const q = state.currentQ;
+  if(q.format === 'year') revealYear();
+  else {
+    stopTimer();
+    document.querySelectorAll('#opts .opt').forEach((o,i)=>{
+      o.disabled = true; o.onclick = null;
+      if(i === q.correct) o.classList.add('right');
+    });
+    showReveal('wrong', q);
+  }
+};
+document.getElementById('exitBtn').onclick = ()=>{
+  if(confirm('Show wirklich verlassen?')) location.reload();
+};
+
+document.addEventListener('keydown', e=>{
+  if(!document.getElementById('show').classList.contains('active')) return;
+  if(['1','2','3','4'].includes(e.key)){
+    const idx = parseInt(e.key,10)-1;
+    if(idx < state.teams.length) onTeamClick(idx);
+  }
+  if(e.key === ' '){
+    e.preventDefault();
+    const nb = document.getElementById('nextBtn');
+    const rb = document.getElementById('revealBtn');
+    if(nb.style.display !== 'none') nb.click();
+    else if(rb.style.display !== 'none') rb.click();
+  }
+  if(e.key === 'Escape') document.getElementById('exitBtn').click();
+});
+
+/* ==========================================================================
+   FINAL
+   ========================================================================== */
+function endShow(){
+  document.getElementById('show').classList.remove('active');
+  document.getElementById('final').classList.add('active');
+  const ranked = state.teams.map((t,i)=>({...t,i})).sort((a,b)=>b.score-a.score);
+  const winner = ranked[0];
+  document.getElementById('finalWinner').textContent = winner.name;
+  document.getElementById('finalWinner').style.color = winner.c;
+  const winText = ranked[1] && ranked[0].score === ranked[1].score ? 'Geteilter Sieg' : 'Sieg';
+  document.getElementById('finalSub').textContent = `${winText} mit ${winner.score} Punkten · Stufe ${['I','II','III'][state.stufe-1]} · ${state.questions.length} Runden`;
+  document.getElementById('finalBoard').innerHTML = ranked.map((t,i)=>`
+    <div class="final-row ${i===0?'win':''}" style="--c:${t.c}">
+      <div class="final-rank">${i+1}.</div>
+      <div class="final-name">${escapeHtml(t.name)}</div>
+      <div class="final-pts" style="color:${t.c}">${t.score}</div>
+    </div>
+  `).join('');
+  confetti(120);
+}
+document.getElementById('rematchBtn').onclick = ()=>{
+  state.teams.forEach(t=>t.score=0);
+  state.round = 0;
+  state.questions = shuffle(Q[state.stufe].slice()).slice(0,12);
+  document.getElementById('final').classList.remove('active');
+  document.getElementById('show').classList.add('active');
+  document.getElementById('roundTotal').textContent = state.questions.length;
+  renderScoreboard();
+  nextRound();
+};
+
+/* ==========================================================================
+   HELPERS
+   ========================================================================== */
+function confetti(n=30){
+  const colors = [...COLORS, '#ffffff', '#ffa55a'];
+  for(let i=0;i<n;i++){
+    const e = document.createElement('div');
+    e.className = 'confetti';
+    e.style.left = Math.random()*100+'vw';
+    e.style.background = colors[i%colors.length];
+    e.style.setProperty('--d', (1.5+Math.random()*2.5)+'s');
+    e.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(), 4500);
+  }
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeAttr(s){ return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+initLobby();
+</script>
+</body>
+</html>
